@@ -4,31 +4,41 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  Unique,
 } from 'typeorm';
 
 @Entity()
+@Unique(['username'])
 export class User {
+  static KEY_MAP = [
+    'username',
+    'passwordHash',
+    'firstName',
+    'lastName',
+    'isAdmin',
+  ];
+
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
   username: string;
 
-  @Column()
+  @Column({ name: 'password_hash' })
   passwordHash: string;
 
-  @Column()
+  @Column({ name: 'first_name' })
   firstName: string;
 
-  @Column()
+  @Column({ name: 'last_name' })
   lastName: string;
 
-  @Column({ default: false })
+  @Column({ default: false, name: 'is_admin' })
   isAdmin: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_ at' })
   updatedAt: Date;
 }

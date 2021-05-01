@@ -17,15 +17,15 @@ export class Book {
   @Column()
   price: number;
 
-  @Column({ default: false })
+  @Column({ default: false, name: 'is_busy' })
   isBusy: boolean;
 
-  @Column({ default: false })
+  @Column({ default: false, name: 'is_archived' })
   isArchived: boolean;
 
-  @CreateDateColumn()
+  @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
 }
