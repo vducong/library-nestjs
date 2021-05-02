@@ -6,13 +6,12 @@ import {
   Patch,
   Param,
   Delete,
-  Req,
-  Request,
+  Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './user.entity';
+import { PaginationParams } from 'src/utils/pagination/pagination';
 
 @Controller('user')
 export class UserController {
@@ -28,14 +27,9 @@ export class UserController {
     return 'signup';
   }
 
-  @Post('signin')
-  signin(): string {
-    return 'signin';
-  }
-
   @Get()
-  async findAll(@Req() _request: Request): Promise<User[]> {
-    return await this.userService.findAll();
+  async findUsers(@Query() { page, limit }: PaginationParams) {
+    return this.userService.findUsers(page, limit);
   }
 
   @Get(':id')

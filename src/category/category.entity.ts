@@ -1,3 +1,5 @@
+// import LengthLimits from '../constants/length';
+import LengthLimits from '../constants/length';
 import {
   Entity,
   Column,
@@ -13,8 +15,11 @@ export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ length: LengthLimits.SMALL_MAX_LENGTH })
   name: string;
+
+  @Column({ nullable: true, length: LengthLimits.BIG_MAX_LENGTH })
+  description: string;
 
   @Column({ default: false, name: 'is_archived' })
   isArchived: boolean;

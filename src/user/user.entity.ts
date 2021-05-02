@@ -1,14 +1,13 @@
+import LengthLimits from '../constants/length';
 import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  Unique,
 } from 'typeorm';
 
 @Entity()
-@Unique(['username'])
 export class User {
   static KEY_MAP = [
     'username',
@@ -21,16 +20,16 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ unique: true, length: LengthLimits.SMALL_MAX_LENGTH })
   username: string;
 
-  @Column({ name: 'password_hash' })
+  @Column({ name: 'password_hash', length: LengthLimits.PASSWORD_HASH_LENGTH })
   passwordHash: string;
 
-  @Column({ name: 'first_name' })
+  @Column({ name: 'first_name', length: LengthLimits.SMALL_MAX_LENGTH })
   firstName: string;
 
-  @Column({ name: 'last_name' })
+  @Column({ name: 'last_name', length: LengthLimits.SMALL_MAX_LENGTH })
   lastName: string;
 
   @Column({ default: false, name: 'is_admin' })

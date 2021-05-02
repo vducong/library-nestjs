@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
+import { PaginationParams } from 'src/utils/pagination/pagination';
 
 @Injectable()
 export class UserService {
@@ -34,10 +35,24 @@ export class UserService {
     });
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userRepo.find().catch((error) => {
-      throw new Error('Find Users ' + error);
+  async findUsers(page?: number, limit?: number) {
+    const currentPage = page || PaginationParams.DEFAULT_PAGE;
+    const take = limit || PaginationParams.DEFAULT_LIMIT;
+    const skip = (currentPage - 1) * take;
+
+    const [users, total] = await this.userRepo.findAndCount({
+      order: {
+        id: 'ASC',
+      },
+      take: take,
+      skip: skip,
     });
+    return {
+      total: total,
+      page: currentPage,
+      count: users.length,
+      users: users,
+    };
   }
 
   async findOne(id: number): Promise<User> {

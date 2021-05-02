@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  HttpCode,
 } from '@nestjs/common';
 import { BookService } from './book.service';
 import { CreateBookDto } from './dto/create-book.dto';
@@ -16,6 +17,7 @@ export class BookController {
   constructor(private readonly bookService: BookService) {}
 
   @Post()
+  @HttpCode(201)
   create(@Body() createBookDto: CreateBookDto) {
     return this.bookService.create(createBookDto);
   }
@@ -31,11 +33,13 @@ export class BookController {
   }
 
   @Patch(':id')
+  @HttpCode(202)
   update(@Param('id') id: number, @Body() updateBookDto: UpdateBookDto) {
     return this.bookService.update(+id, updateBookDto);
   }
 
   @Delete(':id')
+  @HttpCode(204)
   remove(@Param('id') id: number) {
     return this.bookService.remove(+id);
   }

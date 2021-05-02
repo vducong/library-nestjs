@@ -2,7 +2,7 @@ import 'reflect-metadata';
 import { ValidationPipe } from '@nestjs/common/pipes';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
-import { ExceptionsFilter } from './exception-filter/exception.filter';
+import { ExceptionsFilter } from './utils/exception-filter/exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
