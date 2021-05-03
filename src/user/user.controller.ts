@@ -1,49 +1,56 @@
 import {
   Controller,
   Get,
-  Post,
   Body,
   Patch,
   Param,
   Delete,
   Query,
+  UseGuards,
+  HttpCode,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { PaginationParams } from 'src/utils/pagination/pagination';
+import { UserPagination } from 'src/utils/pagination/pagination';
+import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
+import { User } from './user.entity';
+import { DeleteResult, UpdateResult } from 'typeorm';
 
+@UseGuards(JwtAuthGuard)
+// @UseInterceptors(ExcludeNullInterceptor)
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  async create(@Body() createUserDto: CreateUserDto) {
-    return await this.userService.create(createUserDto);
-  }
-
-  @Post('signup')
-  signup(): string {
-    return 'signup';
-  }
+  // @Post()
+  // async create(@Body() createUserDto: CreateUserDto) {
+  //   return await this.userService.register(createUserDto);
+  // }
 
   @Get()
-  async findUsers(@Query() { page, limit }: PaginationParams) {
+  @HttpCode(200)
+  async findUsers(@Query() { page, limit }: UserPagination) {
     return this.userService.findUsers(page, limit);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  @HttpCode(200)
+  async findOne(@Param('id') id: number): Promise<User> {
     return this.userService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
+  @HttpCode(200)
+  async update(
+    @Param('id') id: number,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<UpdateResult> {
     return this.userService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: number) {
+  @HttpCode(204)
+  async remove(@Param('id') id: number): Promise<DeleteResult> {
     return this.userService.remove(+id);
   }
 }
