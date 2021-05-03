@@ -1,11 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
-import { PaginationParams } from 'src/utils/pagination/pagination';
+import { UserPagination } from 'src/utils/pagination/pagination';
+import { Payload } from 'src/auth/auth.type';
 
 @Injectable()
 export class UserService {
@@ -13,20 +14,27 @@ export class UserService {
     @InjectRepository(User) private readonly userRepo: Repository<User>,
   ) {}
 
-  SALT_ROUNDS = 10;
+  readonly SALT_ROUNDS = 10;
 
-  async create(createUserDto: CreateUserDto): Promise<User> {
+  async register(createUserDto: CreateUserDto): Promise<User> {
     const user: User = new User();
     user.passwordHash = await this.hashPassword(createUserDto.password);
     User.KEY_MAP.forEach((key) => {
       user[key] = user[key] || createUserDto[key];
     });
 
-    if (!this.findOneUsername(user.username))
-      return this.userRepo.save(user).catch((error) => {
-        throw new Error('Create User ' + error);
-      });
-    throw new Error('Existed User');
+    if (await this.findOneUsername(user.username))
+      throw new HttpException(
+        'Already existed username',
+        HttpStatus.BAD_REQUEST,
+      );
+
+    return this.userRepo.save(user).catch((error) => {
+      throw new HttpException(
+        'Unable to register a new user ' + error,
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    });
   }
 
   async hashPassword(plainPassword: string): Promise<string> {
@@ -36,17 +44,28 @@ export class UserService {
   }
 
   async findUsers(page?: number, limit?: number) {
-    const currentPage = page || PaginationParams.DEFAULT_PAGE;
-    const take = limit || PaginationParams.DEFAULT_LIMIT;
+    const currentPage = page || UserPagination.DEFAULT_PAGE;
+    const take = limit || UserPagination.DEFAULT_LIMIT;
     const skip = (currentPage - 1) * take;
 
-    const [users, total] = await this.userRepo.findAndCount({
-      order: {
-        id: 'ASC',
-      },
-      take: take,
-      skip: skip,
-    });
+    const [users, total] = await this.userRepo
+      .findAndCount({
+        order: {
+          id: 'ASC',
+        },
+        where: {
+          isArchived: false,
+        },
+        take: take,
+        skip: skip,
+      })
+      .catch(() => {
+        throw new HttpException('Unable to find users', HttpStatus.BAD_REQUEST);
+      });
+
+    if (!users || users.length === 0)
+      throw new HttpException('Users unavailable', HttpStatus.NOT_FOUND);
+
     return {
       total: total,
       page: currentPage,
@@ -56,11 +75,26 @@ export class UserService {
   }
 
   async findOne(id: number): Promise<User> {
-    return this.userRepo.findOne(id);
+    return this.userRepo.findOne(id).catch(() => {
+      throw new HttpException('Unable to find user', HttpStatus.BAD_REQUEST);
+    });
   }
 
   async findOneUsername(username: string): Promise<User> {
-    return this.userRepo.findOne({ username: username });
+    return this.userRepo.findOne({ username: username }).catch(() => {
+      throw new HttpException('Unable to find user', HttpStatus.BAD_REQUEST);
+    });
+  }
+
+  async findOnePayload(payload: Payload): Promise<User> {
+    return this.userRepo
+      .findOne({
+        id: payload.sub,
+        username: payload.username,
+      })
+      .catch(() => {
+        throw new HttpException('Unable to find user', HttpStatus.BAD_REQUEST);
+      });
   }
 
   async update(
@@ -73,8 +107,8 @@ export class UserService {
   }
 
   async remove(id: number): Promise<DeleteResult> {
-    return this.userRepo.delete(id).catch((error) => {
-      throw new Error('Delete User ' + error);
+    return this.userRepo.delete(id).catch(() => {
+      throw new HttpException('Unable to delete user', HttpStatus.BAD_REQUEST);
     });
   }
 }

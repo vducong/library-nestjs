@@ -1,15 +1,53 @@
-import { Controller, Request, Post, UseGuards } from '@nestjs/common';
+import { Controller, Post, Get, Req, Body, HttpCode } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common/decorators';
+import { CreateUserDto } from 'src/user/dto/create-user.dto';
+import { UserService } from 'src/user/user.service';
 import { AuthService } from './auth.service';
-// import { JwtAuthGuard } from './guard/jwt.guard';
+import { IRequest } from './auth.type';
+import { GoogleAuthGuard } from './guard/google.guard';
+import { JwtAuthGuard } from './guard/jwt.guard';
 import { LocalAuthGuard } from './guard/local.guard';
 
+// @UseInterceptors(ExcludeNullInterceptor)
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly userService: UserService,
+  ) {}
+
+  @UseGuards(JwtAuthGuard)
+  @Get()
+  @HttpCode(200)
+  getProfile(@Req() req: IRequest) {
+    return req.user;
+  }
+
+  @Post('signup')
+  @HttpCode(201)
+  async register(
+    @Req() request: IRequest,
+    @Body() createUserDto: CreateUserDto,
+  ) {
+    return this.userService.register(createUserDto);
+  }
 
   @UseGuards(LocalAuthGuard)
-  @Post('login')
-  async login(@Request() req) {
-    return this.authService.login(req.user);
+  @Post('signin')
+  @HttpCode(200)
+  async login(@Req() request: IRequest) {
+    console.error('auth');
+    return this.authService.login(request.user);
+  }
+
+  @UseGuards(GoogleAuthGuard)
+  @Get('google')
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  async loginGoogle(@Req() _request: IRequest) {}
+
+  @UseGuards(GoogleAuthGuard)
+  @Get('google/redirect')
+  async loginGoogleRedirect(@Req() request: IRequest) {
+    return this.authService.loginGoogle(request);
   }
 }

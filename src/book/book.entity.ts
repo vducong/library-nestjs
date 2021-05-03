@@ -5,7 +5,12 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToMany,
+  OneToMany,
 } from 'typeorm';
+import { Category } from '../category/category.entity';
+import { Record } from '../record/record.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
 export class Book {
@@ -28,8 +33,18 @@ export class Book {
   isArchived: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
+  @Exclude()
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
+  @Exclude()
   updatedAt: Date;
+
+  @ManyToMany(() => Category, (category) => category.books, {
+    nullable: true,
+  })
+  categories?: Category[];
+
+  @OneToMany(() => Record, (record) => record.book, { nullable: true })
+  records: Record[];
 }

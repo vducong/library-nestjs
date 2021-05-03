@@ -28,8 +28,10 @@ export class CreateBookDto {
   price: number;
 
   @IsBoolean()
-  isBusy: boolean;
+  @IsOptional()
+  isBusy?: boolean;
 
   @IsBoolean()
-  isArchived: boolean;
+  @IsOptional()
+  isArchived?: boolean;
 }

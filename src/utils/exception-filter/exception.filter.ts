@@ -11,7 +11,6 @@ export class ExceptionsFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
-    const request = ctx.getRequest();
 
     let statusCode: number, statusMessage: string;
     if (exception instanceof HttpException) {
@@ -22,11 +21,10 @@ export class ExceptionsFilter implements ExceptionFilter {
       statusMessage = 'Internal Server Error';
     }
 
-    response.status(statusCode, statusMessage).json({
+    response.status(statusCode).json({
       statusCode: statusCode,
       statusMessage: statusMessage,
       timestamp: new Date().toISOString(),
-      path: request.url,
     });
   }
 }

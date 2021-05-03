@@ -5,7 +5,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
+import { Exclude } from 'class-transformer';
+import { Record } from '../record/record.entity';
 
 @Entity()
 export class User {
@@ -24,6 +27,7 @@ export class User {
   username: string;
 
   @Column({ name: 'password_hash', length: LengthLimits.PASSWORD_HASH_LENGTH })
+  @Exclude()
   passwordHash: string;
 
   @Column({ name: 'first_name', length: LengthLimits.SMALL_MAX_LENGTH })
@@ -38,6 +42,11 @@ export class User {
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
 
-  @UpdateDateColumn({ name: 'updated_ at' })
+  @UpdateDateColumn({ name: 'updated_at' })
+  @Exclude()
   updatedAt: Date;
+
+  @OneToMany(() => Record, (record) => record.borrower, { nullable: true })
+  @Exclude()
+  records: Record[];
 }

@@ -6,16 +6,18 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
-  Unique,
+  ManyToMany,
+  JoinTable,
 } from 'typeorm';
+import { Book } from '../book/book.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity()
-@Unique(['name'])
 export class Category {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: LengthLimits.SMALL_MAX_LENGTH })
+  @Column({ unique: true, length: LengthLimits.SMALL_MAX_LENGTH })
   name: string;
 
   @Column({ nullable: true, length: LengthLimits.BIG_MAX_LENGTH })
@@ -25,8 +27,17 @@ export class Category {
   isArchived: boolean;
 
   @CreateDateColumn({ name: 'created_at' })
+  @Exclude()
   createdAt: Date;
 
   @UpdateDateColumn({ name: 'updated_at' })
+  @Exclude()
   updatedAt: Date;
+
+  @ManyToMany(() => Book, (book) => book.categories, {
+    nullable: true,
+    eager: true,
+  })
+  @JoinTable({ name: 'category_books' })
+  books?: Book[];
 }

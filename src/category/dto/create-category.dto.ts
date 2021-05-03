@@ -20,5 +20,6 @@ export class CreateCategoryDto {
   description?: string;
 
   @IsBoolean()
-  isArchived: boolean;
+  @IsOptional()
+  isArchived?: boolean;
 }

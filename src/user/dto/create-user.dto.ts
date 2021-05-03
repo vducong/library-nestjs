@@ -1,4 +1,10 @@
-import { IsBoolean, IsNotEmpty, IsString, Length } from 'class-validator';
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 import LengthLimits from 'src/constants/length';
 
 export class CreateUserDto {
@@ -26,5 +32,6 @@ export class CreateUserDto {
   lastName: string;
 
   @IsBoolean()
+  @IsOptional()
   isAdmin: boolean;
 }

@@ -8,6 +8,7 @@ import { UserModule } from 'src/user/user.module';
 import { AppController } from './app.controller';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from 'src/auth/auth.module';
+import { RecordModule } from 'src/record/record.module';
 
 @Module({
   controllers: [AppController],
@@ -17,6 +18,7 @@ import { AuthModule } from 'src/auth/auth.module';
     CategoryModule,
     ConfigModule.forRoot(),
     DatabaseModule,
+    RecordModule,
     UserModule,
   ],
   providers: [
