@@ -10,6 +10,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
+import { GoogleUserDto } from 'src/user/dto/google-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -37,16 +38,10 @@ export class AuthService {
     return user;
   }
 
-  async validateUserGoogle(profile: any): Promise<User> {
-    const { emails } = profile;
-    const username = emails[0].value;
-    const user = await this.userService.findOneUsername(username);
-    // if (!user)
-    //   this.userService.register({
-    //     username: emails[0].value,
-    //     firstName: name.givenName,
-    //     lastName: name.familyName,
-    //   })
+  async validateUserGoogle(userDto: GoogleUserDto): Promise<User> {
+    let user = await this.userService.findOneUsername(userDto.username);
+    if (!user)
+      user = await this.userService.registerGoogleUser(userDto);
     return user;
   }
 
@@ -71,16 +66,6 @@ export class AuthService {
     return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get<string>(
       'JWT_EXPIRATION_TIME',
     )}`;
-  }
-
-  async loginGoogle(req) {
-    if (!req.user) {
-      return 'no google user';
-    }
-    return {
-      message: 'Google user info',
-      user: req.user,
-    };
   }
 
   isMatchPassword(plainPassword: string, hashPassword: string): boolean {
