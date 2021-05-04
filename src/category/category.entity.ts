@@ -39,6 +39,16 @@ export class Category {
     nullable: true,
     eager: true,
   })
-  @JoinTable({ name: 'category_books' })
+  @JoinTable({
+    name: 'category_books',
+    joinColumn: {
+      name: 'category_id',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'book_id',
+      referencedColumnName: 'id',
+    },
+  })
   books?: Book[];
 }
