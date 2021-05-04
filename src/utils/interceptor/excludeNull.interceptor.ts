@@ -16,16 +16,10 @@ export class ExcludeNullInterceptor implements NestInterceptor {
   }
 
   recursivelyStripNullValues(value: unknown): unknown {
-    console.error(1);
-    console.error(value);
     if (Array.isArray(value)) {
-      console.error(2);
-      console.error(value);
       return value.map(this.recursivelyStripNullValues);
     }
     if (value !== null && typeof value === 'object') {
-      console.error(3);
-      console.error(value);
       return Object.fromEntries(
         Object.entries(value).map(([key, value]) => [
           key,
@@ -34,8 +28,6 @@ export class ExcludeNullInterceptor implements NestInterceptor {
       );
     }
     if (value !== null) {
-      console.error(5);
-      console.error(value);
       return value;
     }
   }

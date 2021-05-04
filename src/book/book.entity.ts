@@ -30,6 +30,7 @@ export class Book {
   isBusy: boolean;
 
   @Column({ default: false, name: 'is_archived' })
+  @Exclude()
   isArchived: boolean;
 
   @CreateDateColumn({ name: 'created_at' })

@@ -8,7 +8,6 @@ import { GoogleAuthGuard } from './guard/google.guard';
 import { JwtAuthGuard } from './guard/jwt.guard';
 import { LocalAuthGuard } from './guard/local.guard';
 
-// @UseInterceptors(ExcludeNullInterceptor)
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -19,8 +18,8 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get()
   @HttpCode(200)
-  getProfile(@Req() req: IRequest) {
-    return req.user;
+  getProfile(@Req() request: IRequest) {
+    return request.user;
   }
 
   @Post('signup')

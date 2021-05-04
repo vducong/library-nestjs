@@ -1,5 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { RecordService } from 'src/record/record.service';
+import { UserService } from 'src/user/user.service';
 import { BookPagination } from 'src/utils/pagination/pagination';
 import { Repository, UpdateResult } from 'typeorm';
 import { Book } from './book.entity';
@@ -9,7 +11,11 @@ import { UpdateBookDto } from './dto/update-book.dto';
 @Injectable()
 export class BookService {
   constructor(
-    @InjectRepository(Book) private readonly bookRepo: Repository<Book>,
+    @InjectRepository(Book)
+    private readonly bookRepo: Repository<Book>,
+
+    private readonly recordService: RecordService,
+    private readonly userService: UserService,
   ) {}
 
   async create(createBookDto: CreateBookDto): Promise<Book> {
@@ -48,7 +54,7 @@ export class BookService {
       total: total,
       page: currentPage,
       count: books.length,
-      users: books,
+      books: books,
     };
   }
 
@@ -76,5 +82,62 @@ export class BookService {
     return this.bookRepo.update(id, { isArchived: true }).catch(() => {
       throw new HttpException('Unable to delete book', HttpStatus.BAD_REQUEST);
     });
+  }
+
+  async borrow(userId: number, bookId: number): Promise<Book> {
+    const [user, book] = await Promise.all([
+      this.userService.findOne(userId),
+      this.findOne(bookId),
+    ]);
+
+    if (!user || !book)
+      throw new HttpException('Wrong user or book', HttpStatus.BAD_REQUEST);
+
+    if (book.isBusy)
+      throw new HttpException(
+        'Book is unavailable for now',
+        HttpStatus.NOT_ACCEPTABLE,
+      );
+
+    book.isBusy = true;
+    const [borrowedBook, _record] = await Promise.all([
+      this.bookRepo.save(book),
+      this.recordService.create({
+        borrower: user,
+        book: book,
+        borrowedAt: new Date(Date.now()),
+      }),
+    ]);
+
+    return borrowedBook;
+  }
+
+  async return(userId: number, bookId: number): Promise<Book> {
+    const [user, book] = await Promise.all([
+      this.userService.findOne(userId),
+      this.findOne(bookId),
+    ]);
+
+    console.error(user);
+
+    if (!user || !book)
+      throw new HttpException('Wrong user or book', HttpStatus.BAD_REQUEST);
+
+    if (!book.isBusy)
+      throw new HttpException('Not your book...', HttpStatus.NOT_ACCEPTABLE);
+
+    const record = await this.recordService.findBusyOne(userId, bookId);
+    if (!record)
+      throw new HttpException('Unable to return book', HttpStatus.CONFLICT);
+
+    book.isBusy = false;
+    const [borrowedBook, _record] = await Promise.all([
+      this.bookRepo.save(book),
+      this.recordService.update(record.id, {
+        returnedAt: new Date(Date.now()),
+      }),
+    ]);
+
+    return borrowedBook;
   }
 }

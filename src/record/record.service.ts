@@ -1,8 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { IsEmpty, IsNotEmpty } from 'class-validator';
 import { RecordPagination } from 'src/utils/pagination/pagination';
 import { Repository, UpdateResult } from 'typeorm';
 import { CreateRecordDto } from './dto/create-record.dto';
+import { UpdateRecordDto } from './dto/update-record.dto';
 import { Record } from './record.entity';
 
 @Injectable()
@@ -54,13 +56,47 @@ export class RecordService {
       total: total,
       page: currentPage,
       count: records.length,
-      users: records,
+      records: records,
     };
   }
 
   async findOne(id: number): Promise<Record> {
     return this.recordRepo.findOne({ id: id, isArchived: false }).catch(() => {
       throw new HttpException('Unable to find record', HttpStatus.BAD_REQUEST);
+    });
+  }
+
+  async findBusyOne(userId: number, bookId: number) {
+    console.error(userId);
+    console.error(bookId);
+
+    return this.recordRepo
+      .findOne(
+        { borrowerId: userId, bookId: bookId },
+        {
+          where: {
+            borrowedAt: IsNotEmpty(),
+            returnedAt: IsEmpty(),
+          },
+        },
+      )
+      .catch(() => {
+        throw new HttpException(
+          'Unable to find record',
+          HttpStatus.BAD_REQUEST,
+        );
+      });
+  }
+
+  async update(
+    id: number,
+    updateRecordDto: UpdateRecordDto,
+  ): Promise<UpdateResult> {
+    return this.recordRepo.update(id, updateRecordDto).catch(() => {
+      throw new HttpException(
+        'Unable to update record',
+        HttpStatus.BAD_REQUEST,
+      );
     });
   }
 

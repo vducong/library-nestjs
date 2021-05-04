@@ -23,6 +23,7 @@ export class Record {
   bookId: number;
 
   @Column({ default: false, name: 'is_archived' })
+  @Exclude()
   isArchived: boolean;
 
   @Column({ name: 'borrowed_at' })

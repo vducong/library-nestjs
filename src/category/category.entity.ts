@@ -24,6 +24,7 @@ export class Category {
   description: string;
 
   @Column({ default: false, name: 'is_archived' })
+  @Exclude()
   isArchived: boolean;
 
   @CreateDateColumn({ name: 'created_at' })

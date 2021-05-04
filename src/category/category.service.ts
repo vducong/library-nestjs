@@ -15,9 +15,6 @@ export class CategoryService {
     @InjectRepository(Category)
     private readonly categoryRepo: Repository<Category>,
 
-    @InjectRepository(Book)
-    private readonly bookRepo: Repository<Book>,
-
     private readonly bookService: BookService,
   ) {}
 
@@ -60,7 +57,7 @@ export class CategoryService {
         .getOne()
         .catch(() => {
           throw new HttpException(
-            'Unable to look up book',
+            'Unable to find book',
             HttpStatus.BAD_REQUEST,
           );
         })
@@ -116,7 +113,7 @@ export class CategoryService {
       total: total,
       page: currentPage,
       count: categories.length,
-      users: categories,
+      categories: categories,
     };
   }
 
@@ -146,6 +143,10 @@ export class CategoryService {
           HttpStatus.BAD_REQUEST,
         );
       });
+  }
+
+  async findBooksOfOne(id: number): Promise<Book[]> {
+    return (await this.findOne(id)).books;
   }
 
   async update(

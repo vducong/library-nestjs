@@ -5,13 +5,14 @@ import {
   Delete,
   HttpCode,
   Query,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { RecordPagination } from 'src/utils/pagination/pagination';
 import { UpdateResult } from 'typeorm';
 import { RecordService } from './record.service';
 import { Record } from './record.entity';
 
-// @UseInterceptors(ExcludeNullInterceptor)
 @Controller('record')
 export class RecordController {
   constructor(private readonly recordService: RecordService) {}
@@ -25,7 +26,13 @@ export class RecordController {
   @Get(':id')
   @HttpCode(200)
   async findOne(@Param('id') id: number): Promise<Record> {
-    return this.recordService.findOne(+id);
+    const record = await this.recordService.findOne(+id);
+    if (!record)
+      throw new HttpException(
+        'Record with this id does not exist',
+        HttpStatus.NOT_FOUND,
+      );
+    return record;
   }
 
   @Delete(':id')

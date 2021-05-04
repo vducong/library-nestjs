@@ -2,7 +2,7 @@ import { UserService } from 'src/user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/user/user.entity';
-import { Payload } from './auth.type';
+import { JwtUser, Payload } from './auth.type';
 import { ConfigService } from '@nestjs/config';
 import {
   HttpException,
@@ -50,8 +50,8 @@ export class AuthService {
     return user;
   }
 
-  async login(user: User) {
-    const payload: Payload = { sub: user.id, username: user.username };
+  async login(user: JwtUser) {
+    const payload: Payload = { sub: user.userId, username: user.username };
     return {
       access_token: this.jwtService.sign(payload),
     };

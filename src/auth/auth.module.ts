@@ -12,15 +12,15 @@ import { LocalStrategy } from './strategy/local.strategy';
 
 @Module({
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [AuthService, AuthModule],
   imports: [
     ConfigModule,
-    UserModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: process.env.JWT_EXPIRATION },
     }),
     PassportModule,
+    UserModule,
   ],
   providers: [
     AuthService,
