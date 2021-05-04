@@ -54,10 +54,10 @@ $ yarn start:prod
 
 1. Database schema
 
-<img src="https://embed.creately.com/lpAgdIoTfIi?token=7eE2GZQFAwkhmVcp&type=svg">
+<img src="https://embed.creately.com/lpAgdIoTfIi?token=AUddLaCcfiHS3USd&type=svg">
 
 
-2. Compodoc documentation
+2. [Compodoc documentation](https://compodoc.app/guides/getting-started.html)
 ```bash
 # Render documentation
 $ npx @compodoc/compodoc -p tsconfig.json -s
