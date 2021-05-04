@@ -101,8 +101,11 @@ export class UserService {
     id: number,
     updateUserDto: UpdateUserDto,
   ): Promise<UpdateResult> {
-    return this.userRepo.update(id, updateUserDto).catch((error) => {
-      throw new Error('Update User ' + error);
+    return this.userRepo.update(id, updateUserDto).catch(() => {
+      throw new HttpException(
+        "Unable to update this user's information",
+        HttpStatus.BAD_REQUEST,
+      );
     });
   }
 

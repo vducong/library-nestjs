@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { APP_FILTER } from '@nestjs/core/constants';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core/constants';
 import { BookModule } from 'src/book/book.module';
 import { CategoryModule } from 'src/category/category.module';
 import { DatabaseModule } from 'src/database/database.module';
@@ -9,6 +9,7 @@ import { AppController } from './app.controller';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from 'src/auth/auth.module';
 import { RecordModule } from 'src/record/record.module';
+import { RolesGuard } from 'src/role/role.guard';
 
 @Module({
   controllers: [AppController],
@@ -25,6 +26,10 @@ import { RecordModule } from 'src/record/record.module';
     {
       provide: APP_FILTER,
       useClass: ExceptionsFilter,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })

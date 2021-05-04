@@ -9,6 +9,7 @@ import {
 } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import { Record } from '../record/record.entity';
+import { Role } from 'src/role/role.enum';
 
 @Entity()
 export class User {
@@ -49,4 +50,6 @@ export class User {
   @OneToMany(() => Record, (record) => record.borrower, { nullable: true })
   @Exclude()
   records: Record[];
+
+  roles: Role[];
 }

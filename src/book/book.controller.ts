@@ -16,6 +16,8 @@ import {
 } from '@nestjs/common';
 import { IRequest } from 'src/auth/auth.type';
 import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
+import { Roles } from 'src/role/role.decorator';
+import { Role } from 'src/role/role.enum';
 import { BookPagination } from 'src/utils/pagination/pagination';
 import { UpdateResult } from 'typeorm';
 import { Book } from './book.entity';
@@ -27,9 +29,13 @@ import { UpdateBookDto } from './dto/update-book.dto';
 export class BookController {
   constructor(private readonly bookService: BookService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @Post()
   @HttpCode(201)
-  async create(@Body() createBookDto: CreateBookDto): Promise<Book> {
+  async create(@Req() request: IRequest, @Body() createBookDto: CreateBookDto) {
+    console.error(createBookDto);
+
     return this.bookService.create(createBookDto);
   }
 
@@ -51,6 +57,8 @@ export class BookController {
     return book;
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @Put(':id')
   @HttpCode(200)
   async update(
@@ -60,6 +68,8 @@ export class BookController {
     return this.bookService.update(+id, updateBookDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   @HttpCode(204)
   async remove(@Param('id') id: number): Promise<UpdateResult> {
@@ -73,7 +83,7 @@ export class BookController {
     @Req() request: IRequest,
     @Param('id') id: number,
   ): Promise<Book> {
-    const book = await this.bookService.borrow(request.user.userId, +id);
+    const book = await this.bookService.borrow(request.user.id, +id);
     if (!book)
       throw new HttpException(
         'Book with this id does not exist',
@@ -89,7 +99,7 @@ export class BookController {
     @Req() request: IRequest,
     @Param('id') id: number,
   ): Promise<Book> {
-    const book = await this.bookService.return(request.user.userId, +id);
+    const book = await this.bookService.return(request.user.id, +id);
     if (!book)
       throw new HttpException(
         'Book with this id does not exist',

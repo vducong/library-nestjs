@@ -98,6 +98,6 @@
   "lint-staged": {
     "*.ts": "eslint --cache --fix --max-warnings=0",
     "*.{ts,js,json,md}": "prettier --write",
-    "../frontend/**/*.{ts,tsx,js,jsx,json,css,md}": "prettier --write"
+    "../backend/**/*.{ts,tsx,js,jsx,json,css,md}": "prettier --write"
   }
 }

@@ -7,19 +7,25 @@ import {
   Query,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
 import { RecordPagination } from 'src/utils/pagination/pagination';
 import { UpdateResult } from 'typeorm';
 import { RecordService } from './record.service';
 import { Record } from './record.entity';
+import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
+import { Role } from 'src/role/role.enum';
+import { Roles } from 'src/role/role.decorator';
 
+@UseGuards(JwtAuthGuard)
+@Roles(Role.ADMIN)
 @Controller('record')
 export class RecordController {
   constructor(private readonly recordService: RecordService) {}
 
   @Get()
   @HttpCode(200)
-  async findCategories(@Query() { page, limit }: RecordPagination) {
+  async findRecords(@Query() { page, limit }: RecordPagination) {
     return this.recordService.findRecords(page, limit);
   }
 

@@ -35,7 +35,6 @@ export class AuthController {
   @Post('signin')
   @HttpCode(200)
   async login(@Req() request: IRequest) {
-    console.error('auth');
     return this.authService.login(request.user);
   }
 

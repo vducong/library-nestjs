@@ -73,8 +73,11 @@ export class BookService {
     id: number,
     updateBookDto: UpdateBookDto,
   ): Promise<UpdateResult> {
-    return this.bookRepo.update(id, updateBookDto).catch((error) => {
-      throw new Error('Update Book ' + error);
+    return this.bookRepo.update(id, updateBookDto).catch(() => {
+      throw new HttpException(
+        "Unable to update this book's information",
+        HttpStatus.BAD_REQUEST,
+      );
     });
   }
 
@@ -117,8 +120,6 @@ export class BookService {
       this.userService.findOne(userId),
       this.findOne(bookId),
     ]);
-
-    console.error(user);
 
     if (!user || !book)
       throw new HttpException('Wrong user or book', HttpStatus.BAD_REQUEST);

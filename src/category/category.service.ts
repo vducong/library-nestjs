@@ -153,8 +153,11 @@ export class CategoryService {
     id: number,
     updateCategoryDto: UpdateCategoryDto,
   ): Promise<UpdateResult> {
-    return this.categoryRepo.update(id, updateCategoryDto).catch((error) => {
-      throw new Error('Update Category ' + error);
+    return this.categoryRepo.update(id, updateCategoryDto).catch(() => {
+      throw new HttpException(
+        "Unable to update this category's information",
+        HttpStatus.BAD_REQUEST,
+      );
     });
   }
 

@@ -8,8 +8,8 @@ import { AuthService } from '../auth.service';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   constructor(
-    private readonly configService: ConfigService,
     private readonly authService: AuthService,
+    private readonly configService: ConfigService,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -19,7 +19,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   async validate(payload: Payload) {
-    await this.authService.validateUserJwt(payload);
-    return { userId: payload.sub, username: payload.username };
+    return this.authService.validateUserJwt(payload);
   }
 }

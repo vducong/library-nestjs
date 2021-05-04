@@ -67,9 +67,6 @@ export class RecordService {
   }
 
   async findBusyOne(userId: number, bookId: number) {
-    console.error(userId);
-    console.error(bookId);
-
     return this.recordRepo
       .findOne(
         { borrowerId: userId, bookId: bookId },
@@ -94,7 +91,7 @@ export class RecordService {
   ): Promise<UpdateResult> {
     return this.recordRepo.update(id, updateRecordDto).catch(() => {
       throw new HttpException(
-        'Unable to update record',
+        "Unable to update this record's information",
         HttpStatus.BAD_REQUEST,
       );
     });

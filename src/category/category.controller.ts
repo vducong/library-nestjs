@@ -10,9 +10,13 @@ import {
   Query,
   HttpException,
   HttpStatus,
+  UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
 import { Book } from 'src/book/book.entity';
 import { CreateBookDto } from 'src/book/dto/create-book.dto';
+import { Roles } from 'src/role/role.decorator';
+import { Role } from 'src/role/role.enum';
 import { CategoryPagination } from 'src/utils/pagination/pagination';
 import { UpdateResult } from 'typeorm';
 import { Category } from './category.entity';
@@ -24,6 +28,8 @@ import { UpdateCategoryDto } from './dto/update-category.dto';
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @Post()
   @HttpCode(201)
   async create(
@@ -32,28 +38,9 @@ export class CategoryController {
     return this.categoryService.create(createCategoryDto);
   }
 
-  // @Post('add-old-book')
-  // @HttpCode(200)
-  // async addOldBookToCategory(
-  //   @Body() categoryId: number,
-  //   @Body() bookId: number,
-  // ): Promise<Category> {
-  //   return this.categoryService.addOldBookToCategory(categoryId, bookId);
-  // }
-
-  // @Post('add-new-book')
-  // @HttpCode(200)
-  // async addNewBookToCategory(
-  //   @Body() categoryId: number,
-  //   @Body() bookDto: CreateBookDto,
-  // ): Promise<Category> {
-  //   return this.categoryService.addNewBookToCategory(categoryId, bookDto);
-  // }
-
   @Get()
   @HttpCode(200)
   async findCategories(@Query() { page, limit }: CategoryPagination) {
-    console.error(await this.categoryService.findCategories(page, limit));
     return this.categoryService.findCategories(page, limit);
   }
 
@@ -81,6 +68,8 @@ export class CategoryController {
     return books;
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @Post(':id/book')
   @HttpCode(201)
   async addNewBookToCategory(
@@ -90,6 +79,8 @@ export class CategoryController {
     return this.categoryService.addNewBookToCategory(id, bookDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @Patch(':id/book')
   @HttpCode(200)
   async addOldBookToCategory(
@@ -99,6 +90,8 @@ export class CategoryController {
     return this.categoryService.addOldBookToCategory(id, bookId);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @Patch(':id')
   @HttpCode(200)
   async update(
@@ -108,6 +101,8 @@ export class CategoryController {
     return this.categoryService.update(+id, updateCategoryDto);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Roles(Role.ADMIN)
   @Delete(':id')
   @HttpCode(204)
   async remove(@Param('id') id: number): Promise<UpdateResult> {
