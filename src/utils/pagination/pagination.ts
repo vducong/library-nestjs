@@ -1,4 +1,4 @@
-import { IsNumber, Min, IsOptional } from 'class-validator';
+import { IsNumber, Min, IsOptional, Max } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class UserPagination {
@@ -15,6 +15,7 @@ export class UserPagination {
   @Type(() => Number)
   @IsNumber()
   @Min(1)
+  @Max(10)
   limit?: number;
 }
 
@@ -32,6 +33,7 @@ export class BookPagination {
   @Type(() => Number)
   @IsNumber()
   @Min(1)
+  @Max(10)
   limit?: number;
 }
 
@@ -49,6 +51,7 @@ export class CategoryPagination {
   @Type(() => Number)
   @IsNumber()
   @Min(1)
+  @Max(10)
   limit?: number;
 }
 
@@ -66,5 +69,6 @@ export class RecordPagination {
   @Type(() => Number)
   @IsNumber()
   @Min(1)
+  @Max(10)
   limit?: number;
 }
