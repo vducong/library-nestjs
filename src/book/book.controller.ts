@@ -34,8 +34,6 @@ export class BookController {
   @Post()
   @HttpCode(201)
   async create(@Req() request: IRequest, @Body() createBookDto: CreateBookDto) {
-    console.error(createBookDto);
-
     return this.bookService.create(createBookDto);
   }
 
