@@ -7,6 +7,7 @@ import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { UserPagination } from 'src/utils/pagination/pagination';
 import { Payload } from 'src/auth/auth.type';
+import { GoogleUserDto } from './dto/google-user.dto';
 
 @Injectable()
 export class UserService {
@@ -29,9 +30,27 @@ export class UserService {
         HttpStatus.BAD_REQUEST,
       );
 
-    return this.userRepo.save(user).catch((error) => {
+    return this.userRepo.save(user).catch(() => {
       throw new HttpException(
-        'Unable to register a new user ' + error,
+        'Unable to register a new user ',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    });
+  }
+
+  async registerGoogleUser(userDto: GoogleUserDto): Promise<User> {
+    const user: User = new User();
+    Object.assign(user, userDto);
+
+    if (await this.findOneUsername(user.username))
+      throw new HttpException(
+        'Already existed username',
+        HttpStatus.BAD_REQUEST,
+      );
+
+    return this.userRepo.save(user).catch(() => {
+      throw new HttpException(
+        'Unable to register a new Google user',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     });
