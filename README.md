@@ -24,50 +24,57 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+[Library - Nestjs](https://github.com/rbaoc/library-nestjs) implements a Library Management backend system.
 
 ## Installation
 
 ```bash
+# Install dependencies
 $ yarn install
 ```
+
+## Prerequisite: create .env
+
+The `.env_example` file in the current directory is likely omitting key credentials needed to get the backend services running. Please fill it by yourself.
 
 ## Running the app
 
 ```bash
-# development
+# Development mode
 $ yarn start
 
-# watch mode
+# Watch mode
 $ yarn start:dev
 
-# production mode
+# Production mode
 $ yarn start:prod
+```
+
+## Documentation
+
+1. Database schema
+
+<img src="https://embed.creately.com/lpAgdIoTfIi?token=7eE2GZQFAwkhmVcp&type=svg">
+
+
+2. Compodoc documentation
+```bash
+# Render documentation
+$ npx @compodoc/compodoc -p tsconfig.json -s
+
+# Serve generated documentation at http://localhost:8080
+$ npx @compodoc/compodoc -s
 ```
 
 ## Test
 
 ```bash
-# unit tests
+# Unit tests
 $ yarn test
 
-# e2e tests
+# E2E tests
 $ yarn test:e2e
 
-# test coverage
+# Test coverage
 $ yarn test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you"d like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
