@@ -122,7 +122,7 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="11" class="link-to-prism">src/record/record.service.ts:11</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="12" class="link-to-prism">src/record/record.service.ts:12</a></div>
                             </td>
                         </tr>
 
@@ -189,8 +189,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="17"
-                            class="link-to-prism">src/record/record.service.ts:17</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="18"
+                            class="link-to-prism">src/record/record.service.ts:18</a></div>
                 </td>
             </tr>
 
@@ -227,7 +227,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>        <code><a href="../classes/Record.html" target="_self" >Promise&lt;Record&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -261,8 +261,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="69"
-                            class="link-to-prism">src/record/record.service.ts:69</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="70"
+                            class="link-to-prism">src/record/record.service.ts:70</a></div>
                 </td>
             </tr>
 
@@ -311,7 +311,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>        <code><a href="../classes/Record.html" target="_self" >Promise&lt;Record&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -345,8 +345,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="63"
-                            class="link-to-prism">src/record/record.service.ts:63</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="64"
+                            class="link-to-prism">src/record/record.service.ts:64</a></div>
                 </td>
             </tr>
 
@@ -417,8 +417,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="29"
-                            class="link-to-prism">src/record/record.service.ts:29</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">src/record/record.service.ts:30</a></div>
                 </td>
             </tr>
 
@@ -467,7 +467,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>        <code><a href="../classes/Record.html" target="_self" >Promise&lt;RecordPagination&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -501,8 +501,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="100"
-                            class="link-to-prism">src/record/record.service.ts:100</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="101"
+                            class="link-to-prism">src/record/record.service.ts:101</a></div>
                 </td>
             </tr>
 
@@ -573,8 +573,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="88"
-                            class="link-to-prism">src/record/record.service.ts:88</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="89"
+                            class="link-to-prism">src/record/record.service.ts:89</a></div>
                 </td>
             </tr>
 
@@ -642,8 +642,9 @@
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { HttpException, HttpStatus, Injectable } from &#x27;@nestjs/common&#x27;;
 import { InjectRepository } from &#x27;@nestjs/typeorm&#x27;;
 import { IsEmpty, IsNotEmpty } from &#x27;class-validator&#x27;;
-import { RecordPagination } from &#x27;src/utils/pagination/pagination&#x27;;
 import { Repository, UpdateResult } from &#x27;typeorm&#x27;;
+import { RecordPaginationParam } from &#x27;../utils/pagination/pagination.param&#x27;;
+import { RecordPagination } from &#x27;../utils/pagination/pagination.type&#x27;;
 import { CreateRecordDto } from &#x27;./dto/create-record.dto&#x27;;
 import { UpdateRecordDto } from &#x27;./dto/update-record.dto&#x27;;
 import { Record } from &#x27;./record.entity&#x27;;
@@ -655,7 +656,7 @@ export class RecordService {
     private readonly recordRepo: Repository&lt;Record&gt;,
   ) {}
 
-  async create(createRecordDto: CreateRecordDto) {
+  async create(createRecordDto: CreateRecordDto): Promise&lt;Record&gt; {
     const record &#x3D; new Record();
     Object.assign(record, createRecordDto);
 
@@ -667,9 +668,9 @@ export class RecordService {
     });
   }
 
-  async findRecords(page?: number, limit?: number) {
-    const currentPage &#x3D; page || RecordPagination.DEFAULT_PAGE;
-    const take &#x3D; limit || RecordPagination.DEFAULT_LIMIT;
+  async findRecords(page?: number, limit?: number): Promise&lt;RecordPagination&gt; {
+    const currentPage &#x3D; page || RecordPaginationParam.DEFAULT_PAGE;
+    const take &#x3D; limit || RecordPaginationParam.DEFAULT_LIMIT;
     const skip &#x3D; (currentPage - 1) * take;
 
     const [records, total] &#x3D; await this.recordRepo
@@ -707,7 +708,7 @@ export class RecordService {
     });
   }
 
-  async findBusyOne(userId: number, bookId: number) {
+  async findBusyOne(userId: number, bookId: number): Promise&lt;Record&gt; {
     return this.recordRepo
       .findOne(
         { borrowerId: userId, bookId: bookId },

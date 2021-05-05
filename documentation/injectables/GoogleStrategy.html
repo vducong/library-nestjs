@@ -97,12 +97,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(configService: ConfigService)</code>
+<code>constructor(authService: <a href="../injectables/AuthService.html">AuthService</a>, configService: ConfigService)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/auth/strategy/google.strategy.ts:7</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/auth/strategy/google.strategy.ts:10</a></div>
                             </td>
                         </tr>
 
@@ -119,6 +119,18 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                                <tr>
+                                                        <td>authService</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="../injectables/AuthService.html" target="_self" >AuthService</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
                                                 <tr>
                                                         <td>configService</td>
                                                   
@@ -169,8 +181,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="17"
-                            class="link-to-prism">src/auth/strategy/google.strategy.ts:17</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="23"
+                            class="link-to-prism">src/auth/strategy/google.strategy.ts:23</a></div>
                 </td>
             </tr>
 
@@ -231,7 +243,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+                        <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >Promise&lt;User&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -247,14 +259,20 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Strategy } from &#x27;passport-google-oauth20&#x27;;
-import { PassportStrategy } from &#x27;@nestjs/passport&#x27;;
-import { BadRequestException, Injectable } from &#x27;@nestjs/common&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { BadRequestException, Injectable } from &#x27;@nestjs/common&#x27;;
 import { ConfigService } from &#x27;@nestjs/config&#x27;;
+import { PassportStrategy } from &#x27;@nestjs/passport&#x27;;
+import { Strategy } from &#x27;passport-google-oauth20&#x27;;
+import { GoogleUserDto } from &#x27;../../user/dto/google-user.dto&#x27;;
+import { User } from &#x27;../../user/user.entity&#x27;;
+import { AuthService } from &#x27;../auth.service&#x27;;
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, &#x27;google&#x27;) {
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly authService: AuthService,
+    private readonly configService: ConfigService,
+  ) {
     super({
       clientID: configService.get&lt;string&gt;(&#x27;GOOGLE_CLIENT_ID&#x27;),
       clientSecret: configService.get&lt;string&gt;(&#x27;GOOGLE_CLIENT_SECRET&#x27;),
@@ -267,15 +285,16 @@ export class GoogleStrategy extends PassportStrategy(Strategy, &#x27;google&#x27
     accessToken: string,
     refreshToken: string,
     profile: any,
-  ): Promise&lt;any&gt; {
+  ): Promise&lt;User&gt; {
     if (!profile) throw new BadRequestException();
+
     const { name, emails } &#x3D; profile;
-    return {
+    const userDto: GoogleUserDto &#x3D; {
       username: emails[0].value,
       firstName: name.givenName,
       lastName: name.familyName,
-      accessToken,
     };
+    return this.authService.validateUserGoogle(userDto);
   }
 }
 </code></pre>

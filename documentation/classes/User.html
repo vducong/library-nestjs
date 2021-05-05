@@ -534,18 +534,18 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import LengthLimits from &#x27;../constants/length&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Exclude } from &#x27;class-transformer&#x27;;
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from &#x27;typeorm&#x27;;
-import { Exclude } from &#x27;class-transformer&#x27;;
+import LengthLimits from &#x27;../common/constants/length&#x27;;
 import { Record } from &#x27;../record/record.entity&#x27;;
-import { Role } from &#x27;src/role/role.enum&#x27;;
+import { Role } from &#x27;../role/role.enum&#x27;;
 
 @Entity()
 export class User {

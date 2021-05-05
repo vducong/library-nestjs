@@ -52,35 +52,45 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 <h2 id="description">Description</h2>
-<p><a href="https://github.com/nestjs/nest">Nest</a> framework TypeScript starter repository.</p>
+<p><a href="https://github.com/rbaoc/library-nestjs">Library - Nestjs</a> implements a Library Management backend system.</p>
 <h2 id="installation">Installation</h2>
-<div><pre class="line-numbers"><code class="language-bash">$ yarn install</code></pre></div><h2 id="running-the-app">Running the app</h2>
-<div><pre class="line-numbers"><code class="language-bash"># development
+<div><pre class="line-numbers"><code class="language-bash"># Install dependencies
+$ yarn install</code></pre></div><h2 id="prerequisite-create-env">Prerequisite: create .env</h2>
+<p>The <code>.env_example</code> file in the current directory is likely omitting key credentials needed to get the backend services running. Please fill it by yourself.</p>
+<h2 id="running-the-app">Running the app</h2>
+<div><pre class="line-numbers"><code class="language-bash"># Development mode
 $ yarn start
 
-# watch mode
+# Watch mode
 $ yarn start:dev
 
-# production mode
-$ yarn start:prod</code></pre></div><h2 id="test">Test</h2>
-<div><pre class="line-numbers"><code class="language-bash"># unit tests
+# Production mode
+$ yarn start:prod</code></pre></div><h2 id="documentation">Documentation</h2>
+<ol>
+<li>Database schema</li>
+</ol>
+<img src="https://embed.creately.com/lpAgdIoTfIi?token=AUddLaCcfiHS3USd&type=svg">
+
+
+<ol start="2">
+<li><a href="https://compodoc.app/guides/getting-started.html">Compodoc documentation</a><div><pre class="line-numbers"><code class="language-bash"># Render documentation
+$ npx &#64;compodoc/compodoc -p tsconfig.json -s
+</code></pre></div></li>
+</ol>
+<h1 id="serve-generated-documentation-at-httplocalhost8080">Serve generated documentation at <a href="http://localhost:8080">http://localhost:8080</a></h1>
+<p>$ npx @compodoc/compodoc -s</p>
+<div><pre class="line-numbers"><code class="language-none">
+## Test
+
+```bash
+# Unit tests
 $ yarn test
 
-# e2e tests
+# E2E tests
 $ yarn test:e2e
 
-# test coverage
-$ yarn test:cov</code></pre></div><h2 id="support">Support</h2>
-<p>Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you&quot;d like to join them, please <a href="https://docs.nestjs.com/support">read more here</a>.</p>
-<h2 id="stay-in-touch">Stay in touch</h2>
-<ul>
-<li>Author - <a href="https://kamilmysliwiec.com">Kamil Myśliwiec</a></li>
-<li>Website - <a href="https://nestjs.com/">https://nestjs.com</a></li>
-<li>Twitter - <a href="https://twitter.com/nestframework">@nestframework</a></li>
-</ul>
-<h2 id="license">License</h2>
-<p>Nest is <a href="LICENSE">MIT licensed</a>.</p>
-
+# Test coverage
+$ yarn test:cov</code></pre></div>
 
 
 

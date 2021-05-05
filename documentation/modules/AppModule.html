@@ -227,17 +227,17 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Module } from &#x27;@nestjs/common&#x27;;
-import { APP_FILTER, APP_GUARD } from &#x27;@nestjs/core/constants&#x27;;
-import { BookModule } from &#x27;src/book/book.module&#x27;;
-import { CategoryModule } from &#x27;src/category/category.module&#x27;;
-import { DatabaseModule } from &#x27;src/database/database.module&#x27;;
-import { ExceptionsFilter } from &#x27;src/utils/exception-filter/exception.filter&#x27;;
-import { UserModule } from &#x27;src/user/user.module&#x27;;
-import { AppController } from &#x27;./app.controller&#x27;;
 import { ConfigModule } from &#x27;@nestjs/config&#x27;;
-import { AuthModule } from &#x27;src/auth/auth.module&#x27;;
-import { RecordModule } from &#x27;src/record/record.module&#x27;;
-import { RolesGuard } from &#x27;src/role/role.guard&#x27;;
+import { APP_FILTER, APP_GUARD } from &#x27;@nestjs/core/constants&#x27;;
+import { AuthModule } from &#x27;../auth/auth.module&#x27;;
+import { BookModule } from &#x27;../book/book.module&#x27;;
+import { CategoryModule } from &#x27;../category/category.module&#x27;;
+import { DatabaseModule } from &#x27;../database/database.module&#x27;;
+import { RecordModule } from &#x27;../record/record.module&#x27;;
+import { RolesGuard } from &#x27;../role/role.guard&#x27;;
+import { UserModule } from &#x27;../user/user.module&#x27;;
+import { ExceptionsFilter } from &#x27;../utils/exception-filter/exception.filter&#x27;;
+import { AppController } from &#x27;./app.controller&#x27;;
 
 @Module({
   controllers: [AppController],

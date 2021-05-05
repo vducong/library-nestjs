@@ -127,7 +127,7 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { Request } from &#x27;@nestjs/common&#x27;;
-import { User } from &#x27;src/user/user.entity&#x27;;
+import { User } from &#x27;../user/user.entity&#x27;;
 
 export type AuthResponse &#x3D; {
   access_token: string;
@@ -141,6 +141,10 @@ export type Payload &#x3D; {
 export type JwtUser &#x3D; {
   userId: number;
   username: string;
+};
+
+export type AccessToken &#x3D; {
+  access_token: string;
 };
 
 export interface IRequest extends Request {

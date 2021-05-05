@@ -145,8 +145,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="39"
-                            class="link-to-prism">src/user/user.controller.ts:39</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">src/user/user.controller.ts:42</a></div>
                 </td>
             </tr>
 
@@ -222,7 +222,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>findUsers(undefined: <a href="../classes/UserPagination.html">UserPagination</a>)</code>
+                    <code>findUsers(undefined: <a href="../classes/UserPaginationParam.html">UserPaginationParam</a>)</code>
                 </td>
             </tr>
 
@@ -236,8 +236,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="33"
-                            class="link-to-prism">src/user/user.controller.ts:33</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="34"
+                            class="link-to-prism">src/user/user.controller.ts:34</a></div>
                 </td>
             </tr>
 
@@ -258,7 +258,7 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                                <code><a href="../classes/UserPagination.html" target="_self" >UserPagination</a></code>
+                                                <code><a href="../classes/UserPaginationParam.html" target="_self" >UserPaginationParam</a></code>
                                     </td>
 
                                     <td>
@@ -273,7 +273,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>        <code><a href="../classes/User.html" target="_self" >Promise&lt;UserPagination&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -314,8 +314,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="73"
-                            class="link-to-prism">src/user/user.controller.ts:73</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="76"
+                            class="link-to-prism">src/user/user.controller.ts:76</a></div>
                 </td>
             </tr>
 
@@ -405,8 +405,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="58"
-                            class="link-to-prism">src/user/user.controller.ts:58</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">src/user/user.controller.ts:61</a></div>
                 </td>
             </tr>
 
@@ -482,28 +482,29 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
-  Controller,
-  Get,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  Query,
-  UseGuards,
+  Get,
   HttpCode,
   HttpException,
   HttpStatus,
+  Param,
+  Patch,
+  Query,
   Req,
+  UseGuards,
 } from &#x27;@nestjs/common&#x27;;
-import { UserService } from &#x27;./user.service&#x27;;
-import { UpdateUserDto } from &#x27;./dto/update-user.dto&#x27;;
-import { UserPagination } from &#x27;src/utils/pagination/pagination&#x27;;
-import { JwtAuthGuard } from &#x27;src/auth/guard/jwt.guard&#x27;;
-import { User } from &#x27;./user.entity&#x27;;
 import { DeleteResult, UpdateResult } from &#x27;typeorm&#x27;;
-import { Roles } from &#x27;src/role/role.decorator&#x27;;
-import { Role } from &#x27;src/role/role.enum&#x27;;
-import { IRequest } from &#x27;src/auth/auth.type&#x27;;
+import { IRequest } from &#x27;../auth/auth.type&#x27;;
+import { JwtAuthGuard } from &#x27;../auth/guard/jwt.guard&#x27;;
+import { Roles } from &#x27;../role/role.decorator&#x27;;
+import { Role } from &#x27;../role/role.enum&#x27;;
+import { UserPaginationParam } from &#x27;../utils/pagination/pagination.param&#x27;;
+import { UserPagination } from &#x27;../utils/pagination/pagination.type&#x27;;
+import { UpdateUserDto } from &#x27;./dto/update-user.dto&#x27;;
+import { User } from &#x27;./user.entity&#x27;;
+import { UserService } from &#x27;./user.service&#x27;;
 
 @UseGuards(JwtAuthGuard)
 @Controller(&#x27;user&#x27;)
@@ -513,7 +514,9 @@ export class UserController {
   @Roles(Role.ADMIN)
   @Get()
   @HttpCode(200)
-  async findUsers(@Query() { page, limit }: UserPagination) {
+  async findUsers(
+    @Query() { page, limit }: UserPaginationParam,
+  ): Promise&lt;UserPagination&gt; {
     return this.userService.findUsers(page, limit);
   }
 
@@ -525,7 +528,7 @@ export class UserController {
   ): Promise&lt;User&gt; {
     const currentUser &#x3D; request.user;
     if (currentUser.isAdmin || currentUser.id &#x3D;&#x3D;&#x3D; id) {
-      const user &#x3D; await this.userService.findOne(+id);
+      const user &#x3D; await this.userService.findOne(id);
       if (!user)
         throw new HttpException(
           &#x27;User with this id does not exist&#x27;,
@@ -559,7 +562,7 @@ export class UserController {
   ): Promise&lt;DeleteResult&gt; {
     const currentUser &#x3D; request.user;
     if (currentUser.isAdmin || currentUser.id &#x3D;&#x3D;&#x3D; id) {
-      return this.userService.remove(+id);
+      return this.userService.remove(id);
     }
     throw new HttpException(&#x27;Forbidden resource&#x27;, HttpStatus.FORBIDDEN);
   }

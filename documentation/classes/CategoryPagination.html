@@ -140,7 +140,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/utils/pagination/pagination.ts:40</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/utils/pagination/pagination.ts:42</a></div>
                             </td>
                         </tr>
 
@@ -173,7 +173,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/utils/pagination/pagination.ts:39</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/utils/pagination/pagination.ts:41</a></div>
                             </td>
                         </tr>
 
@@ -204,13 +204,13 @@
                             <b>Decorators : </b>
                             <br />
                             <code>
-                                @IsOptional()<br />@Type(undefined)<br />@IsNumber()<br />@Min(1)<br />
+                                @IsOptional()<br />@Type(undefined)<br />@IsNumber()<br />@Min(1)<br />@Max(10)<br />
                             </code>
                         </td>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/utils/pagination/pagination.ts:52</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/utils/pagination/pagination.ts:55</a></div>
                             </td>
                         </tr>
 
@@ -247,7 +247,7 @@
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="46" class="link-to-prism">src/utils/pagination/pagination.ts:46</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/utils/pagination/pagination.ts:48</a></div>
                             </td>
                         </tr>
 
@@ -266,7 +266,7 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsNumber, Min, IsOptional } from &#x27;class-validator&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { IsNumber, Min, IsOptional, Max } from &#x27;class-validator&#x27;;
 import { Type } from &#x27;class-transformer&#x27;;
 
 export class UserPagination {
@@ -283,6 +283,7 @@ export class UserPagination {
   @Type(() &#x3D;&gt; Number)
   @IsNumber()
   @Min(1)
+  @Max(10)
   limit?: number;
 }
 
@@ -300,6 +301,7 @@ export class BookPagination {
   @Type(() &#x3D;&gt; Number)
   @IsNumber()
   @Min(1)
+  @Max(10)
   limit?: number;
 }
 
@@ -317,6 +319,7 @@ export class CategoryPagination {
   @Type(() &#x3D;&gt; Number)
   @IsNumber()
   @Min(1)
+  @Max(10)
   limit?: number;
 }
 
@@ -334,6 +337,7 @@ export class RecordPagination {
   @Type(() &#x3D;&gt; Number)
   @IsNumber()
   @Min(1)
+  @Max(10)
   limit?: number;
 }
 </code></pre>
