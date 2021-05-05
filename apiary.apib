@@ -1,80 +1,632 @@
 FORMAT: 1A
-HOST: https://polls.apiblueprint.org/
+HOST: https://localhost:3000/
 
 # library-nestjs
 
-Polls is a simple API allowing consumers to view polls and vote in them.
+Library is a simple API allowing people to read and borrow books.
+Otherwise, it provides management functions for the librarian.
 
-## Questions Collection [/questions]
+# Group Authentication API
 
-### List All Questions [GET]
+Resources related to authentication in the API.
 
-+ Response 200 (application/json)
+## Current User [/auth]
 
-        [
-            {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
-                    {
-                        "choice": "Swift",
-                        "votes": 2048
-                    }, {
-                        "choice": "Python",
-                        "votes": 1024
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 512
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 256
-                    }
-                ]
-            }
-        ]
+### Get the current user [GET]
 
-### Create a New Question [POST]
+Who Am I?
 
-You may create your own question using this action. It takes a JSON
-object containing a question and a collection of answers in the
-form of choices.
-
-+ Request (application/json)
-
-        {
-            "question": "Favourite programming language?",
-            "choices": [
-                "Swift",
-                "Python",
-                "Objective-C",
-                "Ruby"
-            ]
-        }
-
-+ Response 201 (application/json)
++ Request
 
     + Headers
+  
+            Authorization: Bearer Token (JWT)
 
-            Location: /questions/2
++ Response 200 (application/json)
 
     + Body
 
             {
-                "question": "Favourite programming language?",
-                "published_at": "2015-08-05T08:40:51.620Z",
-                "choices": [
+                "id": 1,
+                "username": "alice",
+                "firstName": "Alice",
+                "lastName": "Bob"
+            }
+
+## Sign Up [/auth/signup]
+
+### Registration [POST]
+
+If you don't have any account, you have no right to borrow books!!! 
+Just one step and get closer to a whole new world :D
+
++ Request (application/json)
+
+    + Body
+
+            {
+                "username": "alice",
+                "password": "@Sup3rS3cur3passw0rd@",
+                "firstName": "Alice",
+                "lastName": "Bob"
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "id": 1,
+                "username": "alice",
+                "password": "@Sup3rS3cur3passw0rd@",
+                "firstName": "Alice",
+                "lastName": "Bob"
+            }
+    
+## Sign In [/auth/signin]
+
+### Login [POST]
+
+If you have already had an account, please login.
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Basic Auth
+
+    + Body
+
+            {
+                "username": "alice",
+                "password": "@Sup3rS3cur3passw0rd@"
+            }
+
++ Response 200 (application/json)
+
+    + Body
+
+            { 
+                "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE1LCJ1c2VybmFtZSI6ImFiY2RlIiwiaWF0IjoxNjE5OTk2NjE4LCJleHAiOjE2MjAwODMwMTh9.383g5gzUG_XM-MeabXd6Uuf-MF0oQgeLQ8V2jR6J39E"
+            }
+
+## Sign In by Google Account [/auth/google]
+
+### Google account verification [GET]
+
++ Response 200
+
+## Google Account Verification [/auth/google/redirect]
+
+### Get profile's information of the Google Account [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            { 
+                "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjE1LCJ1c2VybmFtZSI6ImFiY2RlIiwiaWF0IjoxNjE5OTk2NjE4LCJleHAiOjE2MjAwODMwMTh9.383g5gzUG_XM-MeabXd6Uuf-MF0oQgeLQ8V2jR6J39E"
+            }
+            
+# Group Book API
+
+Resources related to books in the API.
+
+## Book Collections [/book]
+
+### Add a new book [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer Token (JWT)
+
+    + Body
+
+            {
+                "name": "Universe in a nutshell",
+                "price": 999
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "id": 1,
+                "name": "Universe in a nutshell",
+                "description": null,
+                "price": 999,
+                "isBusy": false
+            }
+
+## Find Books [/book{?page,limit}]
+
++ Parameters
+
+    + page (number) - jump to a specified page
+
+    + limit (number) - how many books should be displayed on each page
+
+### Find books [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "total": 1,
+                "page": 1,
+                "count": 1,
+                "books": [
                     {
-                        "choice": "Swift",
-                        "votes": 0
-                    }, {
-                        "choice": "Python",
-                        "votes": 0
-                    }, {
-                        "choice": "Objective-C",
-                        "votes": 0
-                    }, {
-                        "choice": "Ruby",
-                        "votes": 0
+                        "id": 1,
+                        "name": "Universe in a nutshell",
+                        "description": null,
+                        "price": 999,
+                        "isBusy": false
+                    }
+                ],
+            }
+
+## Book [/book/{id}]
+
++ Parameters
+
+     + id (number) - id of the book which you are looking for
+
+### Find a book with id [GET]
+
++ Response 200
+
+            {
+                "id": 1,
+                "name": "Universe in a nutshell",
+                "description": null,
+                "price": 999,
+                "isBusy": false
+            }
+
++ Response 404 (text/plain)
+
+            Book with this id does not exist
+
+### Update a book's information [PUT]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer Token (JWT)
+
+    + Body
+
+            {
+                "price": 9999
+            }
+
++ Response 200 (application/json)
+
+### Delete a book [DELETE]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer Token (JWT)
+
++ Response 204 (application/json)
+
+## Borrow a book [/book/{id}/borrow]
+
++ Parameters
+
+     + id (number) - id of the book which you are looking for
+
+### Borrow a book [PATCH]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer Token (JWT)
+
++ Response 200 (application/json)
+
+            {
+                "id": 1,
+                "name": "Universe in a nutshell",
+                "description": null,
+                "price": 999,
+                "isBusy": true
+            }
+
++ Response 404 (text/plain)
+
+            Book with this id does not exist
+      
+## Return a book [/book/{id}/return]
+
++ Parameters
+
+     + id (number) - id of the book which you are looking for
+
+### Return a borrowed book [PATCH]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer Token (JWT)
+
++ Response 200 (application/json)
+
+            {
+                "id": 1,
+                "name": "Universe in a nutshell",
+                "description": null,
+                "price": 999,
+                "isBusy": false
+            }
+
++ Response 404 (text/plain)
+
+            Book with this id does not exist
+
+# Group Category API
+
+Resources related to categories in the API.
+
+## Category Collections [/category]
+
+### Add a new category [POST]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer Token (JWT)
+
+    + Body
+
+            {
+                "name": "Universe
+            }
+
++ Response 201 (application/json)
+
+    + Body
+
+            {
+                "id": 1,
+                "name": "Universe"
+            }
+
+## Find Categories [/category{?page,limit}]
+
++ Parameters
+
+    + page (number) - jump to a specified page
+
+    + limit (number) - how many categories should be displayed on each page 
+
+### Find categories [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "total": 1,
+                "page": 1,
+                "count": 1,
+                "categories": [
+                    {
+                        "id": 1,
+                        "name": "Universe",
+                        "description": null
+                    }
+                ],
+            }
+
+## Category [/category/{id}]
+
++ Parameters
+
+    + id (number) - id of the category which you are looking for
+
+### Find a category with id [GET]
+
++ Response 200
+
+            {
+                "id": 1,
+                "name": "Universe",
+                "description": null
+            }
+
++ Response 404 (text/plain)
+
+            Book with this id does not exist
+
+### Update a category's information [PATCH]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer Token (JWT)
+
+    + Body
+
+            {
+                "descrition": "To infinity and beyond"
+            }
+
++ Response 200 (application/json)
+
+### Delete a category [DELETE]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer Token (JWT)
+
++ Response 204 (application/json)
+
+## Book Collections of Category [/category/{id}/book]
+
++ Parameters
+
+    + id (number) - id of the category which you are looking for
+
+### Get all the books of a category [GET]
+
++ Response 200 (application/json)
+
+            [
+                {
+                    "id": 1,
+                    "name": "Universe in a nutshell",
+                    "description": null,
+                    "price": 999,
+                    "isBusy": true
+                }
+            ]
+
++ Response 404 (text/plain)
+
+            Category does not contain any books
+
+### Add a new book to the category [POST]
+
++ Request
+
+     + Headers
+
+            Authorization: Bearer Token (JWT)
+
+    + Body
+
+            {
+                "name": "Harry Potter and the philosopher's stone",
+                "price": 9,
+            }
+
++ Response 201
+
+            {
+                "id": 1,
+                "name": "Universe",
+                "description": null,
+                "books": [
+                    {
+                        "id": 2,
+                        "name": "Harry Potter and the philosopher's stone",
+                        "description": null,
+                        "price": 9,
+                        "isBusy": false
                     }
                 ]
             }
+
+### Add an old book to the category [PATCH]
+
++ Request
+
+     + Headers
+
+            Authorization: Bearer Token (JWT)
+
+    + Body
+
+            {
+                "bookId": 1
+            }
+
++ Response 200
+
+            {
+                "id": 1,
+                "name": "Universe",
+                "description": null,
+                "books": [
+                    {
+                        "id": 1,
+                        "name": "Universe in a nutshell",
+                        "description": null,
+                        "price": 9999,
+                        "isBusy": true
+                    },
+                    {
+                        "id": 2,
+                        "name": "Harry Potter and the philosopher's stone",
+                        "description": null,
+                        "price": 9,
+                        "isBusy": false
+                    }
+                ]
+            }
+
+# Group Record API
+
+Resources related to records in the API.
+
++ Headers
+
+        Authorization: Bearer Token (JWT)
+
+## Record Collections [/record{?page,limit}]
+
++ Parameters
+
+    + page (number) - jump to a specified page
+
+    + limit (number) - how many records should be displayed on each page
+
+### Find records [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "total": 1,
+                "page": 1,
+                "count": 1,
+                "records": [
+                    {
+                        "id": 1,
+                        "borrowerId": 1,
+                        "bookId": 1,
+                        "borrowedAt": "2021-02-21 21:02:21",
+                        "returnedAt": null 
+                    }
+                ],
+            }
+
+## Record [/record/{id}]
+
++ Parameters
+
+     + id (number) - id of the record which you are looking for
+
+### Find a record with id [GET]
+
++ Response 200
+
+            {
+                "id": 1,
+                "borrowerId": 1,
+                "bookId": 1,
+                "borrowedAt": "2021-02-21 21:02:21",
+                "returnedAt": null 
+            }
+
++ Response 404 (text/plain)
+
+            Record with this id does not exist
+
+### Delete a record [DELETE]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer Token (JWT)
+
++ Response 204 (application/json)
+
+# Group User API
+
+Resources related to users in the API.
+
+## User Collections [/user{?page,limit}]
+
++ Parameters
+
+    + page (number) - jump to a specified page
+
+    + limit (number) - how many users should be displayed on each page
+
+### Find users [GET]
+
++ Response 200 (application/json)
+
+    + Body
+
+            {
+                "total": 1,
+                "page": 1,
+                "count": 1,
+                "users": [
+                    {
+                        "id": 1,
+                        "username": "alice",
+                        "firstName": "Alice",
+                        "lastName": "Bob"
+                    }
+                ],
+            }
+
+## User [/user/{id}]
+
++ Parameters
+
+     + id (number) - id of the user which you are looking for
+
+### Find a user with id [GET]
+
++ Response 200
+
+            {
+                "id": 1,
+                "username": "alice",
+                "firstName": "Alice",
+                "lastName": "Bob"
+            }
+
++ Response 403 (text/plain)
+
+            Forbidden resource
+            
++ Response 404 (text/plain)
+
+            User with this id does not exist
+
+### Update a user's information [PATCH]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer Token (JWT)
+
++ Response 200 (application/json)
+
++ Response 403 (text/plain)
+
+            Forbidden resource
+
+### Delete a user [DELETE]
+
++ Request (application/json)
+
+    + Headers
+
+            Authorization: Bearer Token (JWT)
+    
+    + Body
+
+            {
+                "firstName": "Alice",
+                "lastName": "Boba"
+            }
+
++ Response 204 (application/json)
+
++ Response 403 (text/plain)
+
+            Forbidden resource
