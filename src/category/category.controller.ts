@@ -1,24 +1,25 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
   HttpCode,
-  Query,
   HttpException,
   HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
-import { Book } from 'src/book/book.entity';
-import { CreateBookDto } from 'src/book/dto/create-book.dto';
-import { Roles } from 'src/role/role.decorator';
-import { Role } from 'src/role/role.enum';
-import { CategoryPagination } from 'src/utils/pagination/pagination';
 import { UpdateResult } from 'typeorm';
+import { JwtAuthGuard } from '../auth/guard/jwt.guard';
+import { Book } from '../book/book.entity';
+import { CreateBookDto } from '../book/dto/create-book.dto';
+import { Roles } from '../role/role.decorator';
+import { Role } from '../role/role.enum';
+import { CategoryPaginationParam } from '../utils/pagination/pagination.param';
+import { CategoryPagination } from '../utils/pagination/pagination.type';
 import { Category } from './category.entity';
 import { CategoryService } from './category.service';
 import { CreateCategoryDto } from './dto/create-category.dto';
@@ -40,14 +41,16 @@ export class CategoryController {
 
   @Get()
   @HttpCode(200)
-  async findCategories(@Query() { page, limit }: CategoryPagination) {
+  async findCategories(
+    @Query() { page, limit }: CategoryPaginationParam,
+  ): Promise<CategoryPagination> {
     return this.categoryService.findCategories(page, limit);
   }
 
   @Get(':id')
   @HttpCode(200)
   async findOne(@Param('id') id: number): Promise<Category> {
-    const category = await this.categoryService.findOne(+id);
+    const category = await this.categoryService.findOne(id);
     if (!category)
       throw new HttpException(
         'Category with this id does not exist',
@@ -59,7 +62,7 @@ export class CategoryController {
   @Get(':id/book')
   @HttpCode(200)
   async findBooksOfOne(@Param('id') id: number): Promise<Book[]> {
-    const books = await this.categoryService.findBooksOfOne(+id);
+    const books = await this.categoryService.findBooksOfOne(id);
     if (!books.length)
       throw new HttpException(
         'Category does not contain any books',
@@ -98,7 +101,7 @@ export class CategoryController {
     @Param('id') id: number,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ): Promise<UpdateResult> {
-    return this.categoryService.update(+id, updateCategoryDto);
+    return this.categoryService.update(id, updateCategoryDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -106,6 +109,6 @@ export class CategoryController {
   @Delete(':id')
   @HttpCode(204)
   async remove(@Param('id') id: number): Promise<UpdateResult> {
-    return this.categoryService.remove(+id);
+    return this.categoryService.remove(id);
   }
 }

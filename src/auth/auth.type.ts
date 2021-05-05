@@ -1,5 +1,5 @@
 import { Request } from '@nestjs/common';
-import { User } from 'src/user/user.entity';
+import { User } from '../user/user.entity';
 
 export type AuthResponse = {
   access_token: string;
@@ -13,6 +13,10 @@ export type Payload = {
 export type JwtUser = {
   userId: number;
   username: string;
+};
+
+export type AccessToken = {
+  access_token: string;
 };
 
 export interface IRequest extends Request {

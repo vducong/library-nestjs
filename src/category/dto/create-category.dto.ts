@@ -6,7 +6,7 @@ import {
   Length,
   MaxLength,
 } from 'class-validator';
-import LengthLimits from 'src/constants/length';
+import LengthLimits from '../../common/constants/length';
 
 export class CreateCategoryDto {
   @IsString()

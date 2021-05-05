@@ -1,13 +1,14 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Book } from 'src/book/book.entity';
-import { BookService } from 'src/book/book.service';
-import { CreateBookDto } from 'src/book/dto/create-book.dto';
-import { CategoryPagination } from 'src/utils/pagination/pagination';
+import { Book } from '../book/book.entity';
+import { BookService } from '../book/book.service';
+import { CreateBookDto } from '../book/dto/create-book.dto';
+import { CategoryPaginationParam } from '../utils/pagination/pagination.param';
 import { Repository, UpdateResult } from 'typeorm';
 import { Category } from './category.entity';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { CategoryPagination } from '../utils/pagination/pagination.type';
 
 @Injectable()
 export class CategoryService {
@@ -18,7 +19,7 @@ export class CategoryService {
     private readonly bookService: BookService,
   ) {}
 
-  async create(createCategoryDto: CreateCategoryDto) {
+  async create(createCategoryDto: CreateCategoryDto): Promise<Category> {
     const category = new Category();
     Object.assign(category, createCategoryDto);
 
@@ -83,9 +84,12 @@ export class CategoryService {
     return category;
   }
 
-  async findCategories(page?: number, limit?: number) {
-    const currentPage = page || CategoryPagination.DEFAULT_PAGE;
-    const take = limit || CategoryPagination.DEFAULT_LIMIT;
+  async findCategories(
+    page?: number,
+    limit?: number,
+  ): Promise<CategoryPagination> {
+    const currentPage = page || CategoryPaginationParam.DEFAULT_PAGE;
+    const take = limit || CategoryPaginationParam.DEFAULT_LIMIT;
     const skip = (currentPage - 1) * take;
 
     const [categories, total] = await this.categoryRepo

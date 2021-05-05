@@ -1,12 +1,12 @@
-import LengthLimits from '../constants/length';
+import LengthLimits from '../common/constants/length';
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
-  ManyToMany,
+  Entity,
   JoinTable,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Book } from '../book/book.entity';
 import { Exclude } from 'class-transformer';
