@@ -316,10 +316,10 @@
   IsDate,
   IsInstance,
   IsNotEmpty,
-  IsOptional,
+  IsOptional
 } from &#x27;class-validator&#x27;;
-import { Book } from &#x27;src/book/book.entity&#x27;;
-import { User } from &#x27;src/user/user.entity&#x27;;
+import { Book } from &#x27;../../book/book.entity&#x27;;
+import { User } from &#x27;../../user/user.entity&#x27;;
 
 export class CreateRecordDto {
   @IsInstance(User)

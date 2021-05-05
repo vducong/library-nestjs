@@ -1,15 +1,15 @@
 module.exports = {
-  parser: "@typescript-eslint/parser",
-  ignorePatterns: [".eslintrc.js"],
+  parser: '@typescript-eslint/parser',
+  ignorePatterns: ['.eslintrc.js'],
   parserOptions: {
-    project: "tsconfig.json",
-    sourceType: "module",
+    project: 'tsconfig.json',
+    sourceType: 'module',
   },
-  plugins: ["@typescript-eslint/eslint-plugin"],
+  plugins: ['@typescript-eslint/eslint-plugin'],
   extends: [
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
+    'plugin:@typescript-eslint/eslint-recommended',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
   ],
   root: true,
   env: {
@@ -17,21 +17,29 @@ module.exports = {
     jest: true,
   },
   rules: {
-    "@typescript-eslint/interface-name-prefix": "off",
-    "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-explicit-any": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "error",
+    '@typescript-eslint/interface-name-prefix': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
       {
-        vars: "all",
-        args: "after-used",
+        vars: 'all',
+        args: 'after-used',
         ignoreRestSiblings: true,
-        varsIgnorePattern: "^_",
-        argsIgnorePattern: "^_",
+        varsIgnorePattern: '^_',
+        argsIgnorePattern: '^_',
       },
     ],
-    "no-console": ["error", { allow: ["warn", "error"] }],
-    "@typescript-eslint/no-var-requires": 0,
+    'no-console': ['error', { allow: ['warn', 'error'] }],
+    'sort-imports': [
+      'error',
+      {
+        ignoreCase: true,
+        ignoreDeclarationSort: true,
+        memberSyntaxSortOrder: ['multiple', 'single', 'all', 'none'],
+      },
+    ],
+    '@typescript-eslint/no-var-requires': 0,
   },
 };

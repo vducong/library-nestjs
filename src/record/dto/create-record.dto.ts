@@ -5,8 +5,8 @@ import {
   IsNotEmpty,
   IsOptional,
 } from 'class-validator';
-import { Book } from 'src/book/book.entity';
-import { User } from 'src/user/user.entity';
+import { Book } from '../../book/book.entity';
+import { User } from '../../user/user.entity';
 
 export class CreateRecordDto {
   @IsInstance(User)

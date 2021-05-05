@@ -1,15 +1,15 @@
 import { Module } from '@nestjs/common';
-import { APP_FILTER, APP_GUARD } from '@nestjs/core/constants';
-import { BookModule } from 'src/book/book.module';
-import { CategoryModule } from 'src/category/category.module';
-import { DatabaseModule } from 'src/database/database.module';
-import { ExceptionsFilter } from 'src/utils/exception-filter/exception.filter';
-import { UserModule } from 'src/user/user.module';
-import { AppController } from './app.controller';
 import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from 'src/auth/auth.module';
-import { RecordModule } from 'src/record/record.module';
-import { RolesGuard } from 'src/role/role.guard';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core/constants';
+import { AuthModule } from '../auth/auth.module';
+import { BookModule } from '../book/book.module';
+import { CategoryModule } from '../category/category.module';
+import { DatabaseModule } from '../database/database.module';
+import { RecordModule } from '../record/record.module';
+import { RolesGuard } from '../role/role.guard';
+import { UserModule } from '../user/user.module';
+import { ExceptionsFilter } from '../utils/exception-filter/exception.filter';
+import { AppController } from './app.controller';
 
 @Module({
   controllers: [AppController],

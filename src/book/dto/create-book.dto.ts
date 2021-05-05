@@ -8,7 +8,7 @@ import {
   MaxLength,
   Min,
 } from 'class-validator';
-import LengthLimits from 'src/constants/length';
+import LengthLimits from '../../common/constants/length';
 
 export class CreateBookDto {
   @IsString()

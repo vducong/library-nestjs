@@ -141,8 +141,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="34"
-                            class="link-to-prism">src/record/record.controller.ts:34</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">src/record/record.controller.ts:37</a></div>
                 </td>
             </tr>
 
@@ -206,7 +206,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>findRecords(undefined: <a href="../classes/RecordPagination.html">RecordPagination</a>)</code>
+                    <code>findRecords(undefined: <a href="../classes/RecordPaginationParam.html">RecordPaginationParam</a>)</code>
                 </td>
             </tr>
 
@@ -220,8 +220,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="28"
-                            class="link-to-prism">src/record/record.controller.ts:28</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="29"
+                            class="link-to-prism">src/record/record.controller.ts:29</a></div>
                 </td>
             </tr>
 
@@ -242,7 +242,7 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                                <code><a href="../classes/RecordPagination.html" target="_self" >RecordPagination</a></code>
+                                                <code><a href="../classes/RecordPaginationParam.html" target="_self" >RecordPaginationParam</a></code>
                                     </td>
 
                                     <td>
@@ -257,7 +257,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>        <code><a href="../classes/Record.html" target="_self" >Promise&lt;RecordPagination&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -298,8 +298,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="46"
-                            class="link-to-prism">src/record/record.controller.ts:46</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="49"
+                            class="link-to-prism">src/record/record.controller.ts:49</a></div>
                 </td>
             </tr>
 
@@ -352,22 +352,23 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
   Controller,
-  Get,
-  Param,
   Delete,
+  Get,
   HttpCode,
-  Query,
   HttpException,
   HttpStatus,
+  Param,
+  Query,
   UseGuards,
 } from &#x27;@nestjs/common&#x27;;
-import { RecordPagination } from &#x27;src/utils/pagination/pagination&#x27;;
 import { UpdateResult } from &#x27;typeorm&#x27;;
-import { RecordService } from &#x27;./record.service&#x27;;
+import { JwtAuthGuard } from &#x27;../auth/guard/jwt.guard&#x27;;
+import { Roles } from &#x27;../role/role.decorator&#x27;;
+import { Role } from &#x27;../role/role.enum&#x27;;
+import { RecordPaginationParam } from &#x27;../utils/pagination/pagination.param&#x27;;
+import { RecordPagination } from &#x27;../utils/pagination/pagination.type&#x27;;
 import { Record } from &#x27;./record.entity&#x27;;
-import { JwtAuthGuard } from &#x27;src/auth/guard/jwt.guard&#x27;;
-import { Role } from &#x27;src/role/role.enum&#x27;;
-import { Roles } from &#x27;src/role/role.decorator&#x27;;
+import { RecordService } from &#x27;./record.service&#x27;;
 
 @UseGuards(JwtAuthGuard)
 @Roles(Role.ADMIN)
@@ -377,14 +378,16 @@ export class RecordController {
 
   @Get()
   @HttpCode(200)
-  async findRecords(@Query() { page, limit }: RecordPagination) {
+  async findRecords(
+    @Query() { page, limit }: RecordPaginationParam,
+  ): Promise&lt;RecordPagination&gt; {
     return this.recordService.findRecords(page, limit);
   }
 
   @Get(&#x27;:id&#x27;)
   @HttpCode(200)
   async findOne(@Param(&#x27;id&#x27;) id: number): Promise&lt;Record&gt; {
-    const record &#x3D; await this.recordService.findOne(+id);
+    const record &#x3D; await this.recordService.findOne(id);
     if (!record)
       throw new HttpException(
         &#x27;Record with this id does not exist&#x27;,
@@ -396,7 +399,7 @@ export class RecordController {
   @Delete(&#x27;:id&#x27;)
   @HttpCode(204)
   async remove(@Param(&#x27;id&#x27;) id: number): Promise&lt;UpdateResult&gt; {
-    return this.recordService.remove(+id);
+    return this.recordService.remove(id);
   }
 }
 </code></pre>

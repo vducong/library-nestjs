@@ -1,26 +1,27 @@
 import {
-  Controller,
-  Get,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
-  Query,
-  UseGuards,
+  Get,
   HttpCode,
   HttpException,
   HttpStatus,
+  Param,
+  Patch,
+  Query,
   Req,
+  UseGuards,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { UserPagination } from 'src/utils/pagination/pagination';
-import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
-import { User } from './user.entity';
 import { DeleteResult, UpdateResult } from 'typeorm';
-import { Roles } from 'src/role/role.decorator';
-import { Role } from 'src/role/role.enum';
-import { IRequest } from 'src/auth/auth.type';
+import { IRequest } from '../auth/auth.type';
+import { JwtAuthGuard } from '../auth/guard/jwt.guard';
+import { Roles } from '../role/role.decorator';
+import { Role } from '../role/role.enum';
+import { UserPaginationParam } from '../utils/pagination/pagination.param';
+import { UserPagination } from '../utils/pagination/pagination.type';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './user.entity';
+import { UserService } from './user.service';
 
 @UseGuards(JwtAuthGuard)
 @Controller('user')
@@ -30,7 +31,9 @@ export class UserController {
   @Roles(Role.ADMIN)
   @Get()
   @HttpCode(200)
-  async findUsers(@Query() { page, limit }: UserPagination) {
+  async findUsers(
+    @Query() { page, limit }: UserPaginationParam,
+  ): Promise<UserPagination> {
     return this.userService.findUsers(page, limit);
   }
 
@@ -42,7 +45,7 @@ export class UserController {
   ): Promise<User> {
     const currentUser = request.user;
     if (currentUser.isAdmin || currentUser.id === id) {
-      const user = await this.userService.findOne(+id);
+      const user = await this.userService.findOne(id);
       if (!user)
         throw new HttpException(
           'User with this id does not exist',
@@ -76,7 +79,7 @@ export class UserController {
   ): Promise<DeleteResult> {
     const currentUser = request.user;
     if (currentUser.isAdmin || currentUser.id === id) {
-      return this.userService.remove(+id);
+      return this.userService.remove(id);
     }
     throw new HttpException('Forbidden resource', HttpStatus.FORBIDDEN);
   }

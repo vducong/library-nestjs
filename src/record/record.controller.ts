@@ -1,21 +1,22 @@
 import {
   Controller,
-  Get,
-  Param,
   Delete,
+  Get,
   HttpCode,
-  Query,
   HttpException,
   HttpStatus,
+  Param,
+  Query,
   UseGuards,
 } from '@nestjs/common';
-import { RecordPagination } from 'src/utils/pagination/pagination';
 import { UpdateResult } from 'typeorm';
-import { RecordService } from './record.service';
+import { JwtAuthGuard } from '../auth/guard/jwt.guard';
+import { Roles } from '../role/role.decorator';
+import { Role } from '../role/role.enum';
+import { RecordPaginationParam } from '../utils/pagination/pagination.param';
+import { RecordPagination } from '../utils/pagination/pagination.type';
 import { Record } from './record.entity';
-import { JwtAuthGuard } from 'src/auth/guard/jwt.guard';
-import { Role } from 'src/role/role.enum';
-import { Roles } from 'src/role/role.decorator';
+import { RecordService } from './record.service';
 
 @UseGuards(JwtAuthGuard)
 @Roles(Role.ADMIN)
@@ -25,14 +26,16 @@ export class RecordController {
 
   @Get()
   @HttpCode(200)
-  async findRecords(@Query() { page, limit }: RecordPagination) {
+  async findRecords(
+    @Query() { page, limit }: RecordPaginationParam,
+  ): Promise<RecordPagination> {
     return this.recordService.findRecords(page, limit);
   }
 
   @Get(':id')
   @HttpCode(200)
   async findOne(@Param('id') id: number): Promise<Record> {
-    const record = await this.recordService.findOne(+id);
+    const record = await this.recordService.findOne(id);
     if (!record)
       throw new HttpException(
         'Record with this id does not exist',
@@ -44,6 +47,6 @@ export class RecordController {
   @Delete(':id')
   @HttpCode(204)
   async remove(@Param('id') id: number): Promise<UpdateResult> {
-    return this.recordService.remove(+id);
+    return this.recordService.remove(id);
   }
 }

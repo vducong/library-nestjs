@@ -5,9 +5,11 @@ import {
   IsString,
   Length,
 } from 'class-validator';
-import LengthLimits from 'src/constants/length';
+import LengthLimits from '../../common/constants/length';
 
 export class CreateUserDto {
+  // Todo: isalphanumberic for username
+  // Todo: isemail for email
   @IsString()
   @IsNotEmpty()
   username: string;

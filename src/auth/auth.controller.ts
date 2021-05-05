@@ -1,9 +1,10 @@
-import { Controller, Post, Get, Req, Body, HttpCode } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Req } from '@nestjs/common';
 import { UseGuards } from '@nestjs/common/decorators';
-import { CreateUserDto } from 'src/user/dto/create-user.dto';
-import { UserService } from 'src/user/user.service';
+import { CreateUserDto } from '../user/dto/create-user.dto';
+import { User } from '../user/user.entity';
+import { UserService } from '../user/user.service';
 import { AuthService } from './auth.service';
-import { IRequest } from './auth.type';
+import { AccessToken, IRequest } from './auth.type';
 import { GoogleAuthGuard } from './guard/google.guard';
 import { JwtAuthGuard } from './guard/jwt.guard';
 import { LocalAuthGuard } from './guard/local.guard';
@@ -18,23 +19,21 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   @Get()
   @HttpCode(200)
-  getProfile(@Req() request: IRequest) {
+  getProfile(@Req() request: IRequest): User {
     return request.user;
   }
 
   @Post('signup')
   @HttpCode(201)
-  async register(
-    @Req() request: IRequest,
-    @Body() createUserDto: CreateUserDto,
-  ) {
+  async register(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.userService.register(createUserDto);
   }
 
+  // Todo: use function instead
   @UseGuards(LocalAuthGuard)
   @Post('signin')
   @HttpCode(200)
-  async login(@Req() request: IRequest) {
+  login(@Req() request: IRequest): AccessToken {
     return this.authService.login(request.user);
   }
 
@@ -45,7 +44,7 @@ export class AuthController {
 
   @UseGuards(GoogleAuthGuard)
   @Get('google/redirect')
-  async loginGoogleRedirect(@Req() request: IRequest) {
+  loginGoogleRedirect(@Req() request: IRequest): AccessToken {
     return this.authService.login(request.user);
   }
 }

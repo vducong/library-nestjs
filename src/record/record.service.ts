@@ -1,8 +1,9 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsEmpty, IsNotEmpty } from 'class-validator';
-import { RecordPagination } from 'src/utils/pagination/pagination';
 import { Repository, UpdateResult } from 'typeorm';
+import { RecordPaginationParam } from '../utils/pagination/pagination.param';
+import { RecordPagination } from '../utils/pagination/pagination.type';
 import { CreateRecordDto } from './dto/create-record.dto';
 import { UpdateRecordDto } from './dto/update-record.dto';
 import { Record } from './record.entity';
@@ -14,7 +15,7 @@ export class RecordService {
     private readonly recordRepo: Repository<Record>,
   ) {}
 
-  async create(createRecordDto: CreateRecordDto) {
+  async create(createRecordDto: CreateRecordDto): Promise<Record> {
     const record = new Record();
     Object.assign(record, createRecordDto);
 
@@ -26,9 +27,9 @@ export class RecordService {
     });
   }
 
-  async findRecords(page?: number, limit?: number) {
-    const currentPage = page || RecordPagination.DEFAULT_PAGE;
-    const take = limit || RecordPagination.DEFAULT_LIMIT;
+  async findRecords(page?: number, limit?: number): Promise<RecordPagination> {
+    const currentPage = page || RecordPaginationParam.DEFAULT_PAGE;
+    const take = limit || RecordPaginationParam.DEFAULT_LIMIT;
     const skip = (currentPage - 1) * take;
 
     const [records, total] = await this.recordRepo
@@ -66,7 +67,7 @@ export class RecordService {
     });
   }
 
-  async findBusyOne(userId: number, bookId: number) {
+  async findBusyOne(userId: number, bookId: number): Promise<Record> {
     return this.recordRepo
       .findOne(
         { borrowerId: userId, bookId: bookId },

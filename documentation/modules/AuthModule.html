@@ -65,13 +65,13 @@
 <title>cluster_AuthModule</title>
 <polygon fill="none" stroke="black" stroke-dasharray="1,5" points="8,-70 8,-268 843,-268 843,-70 8,-70"/>
 </g>
-<g id="clust6" class="cluster">
-<title>cluster_AuthModule_providers</title>
-<polygon fill="none" stroke="black" points="126,-78 126,-130 835,-130 835,-78 126,-78"/>
-</g>
 <g id="clust4" class="cluster">
 <title>cluster_AuthModule_exports</title>
 <polygon fill="none" stroke="black" points="296,-208 296,-260 511,-260 511,-208 296,-208"/>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_AuthModule_providers</title>
+<polygon fill="none" stroke="black" points="126,-78 126,-130 835,-130 835,-78 126,-78"/>
 </g>
 <g id="clust3" class="cluster">
 <title>cluster_AuthModule_imports</title>
@@ -280,8 +280,8 @@
 import { ConfigModule, ConfigService } from &#x27;@nestjs/config&#x27;;
 import { JwtModule } from &#x27;@nestjs/jwt&#x27;;
 import { PassportModule } from &#x27;@nestjs/passport&#x27;;
-import { UserModule } from &#x27;src/user/user.module&#x27;;
-import { UserService } from &#x27;src/user/user.service&#x27;;
+import { UserModule } from &#x27;../user/user.module&#x27;;
+import { UserService } from &#x27;../user/user.service&#x27;;
 import { AuthController } from &#x27;./auth.controller&#x27;;
 import { AuthService } from &#x27;./auth.service&#x27;;
 import { GoogleStrategy } from &#x27;./strategy/google.strategy&#x27;;

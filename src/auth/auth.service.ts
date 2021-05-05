@@ -1,16 +1,16 @@
-import { UserService } from 'src/user/user.service';
-import { JwtService } from '@nestjs/jwt';
-import * as bcrypt from 'bcrypt';
-import { User } from 'src/user/user.entity';
-import { Payload } from './auth.type';
-import { ConfigService } from '@nestjs/config';
 import {
   HttpException,
   HttpStatus,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { GoogleUserDto } from 'src/user/dto/google-user.dto';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
+import { GoogleUserDto } from '../user/dto/google-user.dto';
+import { User } from '../user/user.entity';
+import { UserService } from '../user/user.service';
+import { AccessToken, Payload } from './auth.type';
 
 @Injectable()
 export class AuthService {
@@ -40,12 +40,11 @@ export class AuthService {
 
   async validateUserGoogle(userDto: GoogleUserDto): Promise<User> {
     let user = await this.userService.findOneUsername(userDto.username);
-    if (!user)
-      user = await this.userService.registerGoogleUser(userDto);
+    if (!user) user = await this.userService.registerGoogleUser(userDto);
     return user;
   }
 
-  async verifyTokenJwt(token: string) {
+  async verifyTokenJwt(token: string): Promise<User> {
     const payload = (await this.jwtService.verify(token)) as Payload;
     return this.validateUserJwt({
       sub: payload.sub,
@@ -53,14 +52,14 @@ export class AuthService {
     });
   }
 
-  async login(user: User) {
+  login(user: User): AccessToken {
     const payload: Payload = { sub: user.id, username: user.username };
     return {
       access_token: this.jwtService.sign(payload),
     };
   }
 
-  getCookieWithJwtToken(user: User) {
+  getCookieWithJwtToken(user: User): string {
     const payload: Payload = { sub: user.id, username: user.username };
     const token = this.jwtService.sign(payload);
     return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get<string>(

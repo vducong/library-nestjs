@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { RecordService } from 'src/record/record.service';
-import { UserService } from 'src/user/user.service';
-import { BookPagination } from 'src/utils/pagination/pagination';
 import { Repository, UpdateResult } from 'typeorm';
+import { RecordService } from '../record/record.service';
+import { UserService } from '../user/user.service';
+import { BookPaginationParam } from '../utils/pagination/pagination.param';
+import { BookPagination } from '../utils/pagination/pagination.type';
 import { Book } from './book.entity';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
@@ -27,9 +28,9 @@ export class BookService {
     });
   }
 
-  async findBooks(page?: number, limit?: number) {
-    const currentPage = page || BookPagination.DEFAULT_PAGE;
-    const take = limit || BookPagination.DEFAULT_LIMIT;
+  async findBooks(page?: number, limit?: number): Promise<BookPagination> {
+    const currentPage = page || BookPaginationParam.DEFAULT_PAGE;
+    const take = limit || BookPaginationParam.DEFAULT_LIMIT;
     const skip = (currentPage - 1) * take;
 
     const [books, total] = await this.bookRepo

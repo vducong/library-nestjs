@@ -1,14 +1,14 @@
 import { Module } from '@nestjs/common';
-import { CategoryService } from './category.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { BookModule } from '../book/book.module';
+import { BookService } from '../book/book.service';
+import { Record } from '../record/record.entity';
+import { RecordService } from '../record/record.service';
+import { User } from '../user/user.entity';
+import { UserService } from '../user/user.service';
 import { CategoryController } from './category.controller';
 import { Category } from './category.entity';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { BookService } from 'src/book/book.service';
-import { Record } from 'src/record/record.entity';
-import { BookModule } from 'src/book/book.module';
-import { RecordService } from 'src/record/record.service';
-import { UserService } from 'src/user/user.service';
-import { User } from 'src/user/user.entity';
+import { CategoryService } from './category.service';
 
 @Module({
   controllers: [CategoryController],

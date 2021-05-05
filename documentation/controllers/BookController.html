@@ -157,8 +157,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="82"
-                            class="link-to-prism">src/book/book.controller.ts:82</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="83"
+                            class="link-to-prism">src/book/book.controller.ts:83</a></div>
                 </td>
             </tr>
 
@@ -234,7 +234,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>create(request: <a href="../interfaces/IRequest.html">IRequest</a>, createBookDto: <a href="../classes/CreateBookDto.html">CreateBookDto</a>)</code>
+                    <code>create(createBookDto: <a href="../classes/CreateBookDto.html">CreateBookDto</a>)</code>
                 </td>
             </tr>
 
@@ -248,8 +248,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="36"
-                            class="link-to-prism">src/book/book.controller.ts:36</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">src/book/book.controller.ts:37</a></div>
                 </td>
             </tr>
 
@@ -269,18 +269,6 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>request</td>
-                                    <td>
-                                                <code><a href="../interfaces/IRequest.html" target="_self" >IRequest</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
                                     <td>createBookDto</td>
                                     <td>
                                                 <code><a href="../classes/CreateBookDto.html" target="_self" >CreateBookDto</a></code>
@@ -298,7 +286,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>        <code><a href="../classes/Book.html" target="_self" >Promise&lt;Book&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -325,7 +313,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>findBooks(undefined: <a href="../classes/BookPagination.html">BookPagination</a>)</code>
+                    <code>findBooks(undefined: <a href="../classes/BookPaginationParam.html">BookPaginationParam</a>)</code>
                 </td>
             </tr>
 
@@ -339,8 +327,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="44"
-                            class="link-to-prism">src/book/book.controller.ts:44</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="43"
+                            class="link-to-prism">src/book/book.controller.ts:43</a></div>
                 </td>
             </tr>
 
@@ -361,7 +349,7 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                                <code><a href="../classes/BookPagination.html" target="_self" >BookPagination</a></code>
+                                                <code><a href="../classes/BookPaginationParam.html" target="_self" >BookPaginationParam</a></code>
                                     </td>
 
                                     <td>
@@ -376,7 +364,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>        <code><a href="../classes/Book.html" target="_self" >Promise&lt;BookPagination&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -417,8 +405,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="50"
-                            class="link-to-prism">src/book/book.controller.ts:50</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="51"
+                            class="link-to-prism">src/book/book.controller.ts:51</a></div>
                 </td>
             </tr>
 
@@ -496,8 +484,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="75"
-                            class="link-to-prism">src/book/book.controller.ts:75</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="76"
+                            class="link-to-prism">src/book/book.controller.ts:76</a></div>
                 </td>
             </tr>
 
@@ -575,8 +563,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="98"
-                            class="link-to-prism">src/book/book.controller.ts:98</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="99"
+                            class="link-to-prism">src/book/book.controller.ts:99</a></div>
                 </td>
             </tr>
 
@@ -666,8 +654,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="64"
-                            class="link-to-prism">src/book/book.controller.ts:64</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">src/book/book.controller.ts:65</a></div>
                 </td>
             </tr>
 
@@ -731,27 +719,28 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Param,
+  Controller,
   Delete,
+  Get,
   HttpCode,
-  Query,
   HttpException,
   HttpStatus,
-  Put,
-  Req,
+  Param,
   Patch,
+  Post,
+  Put,
+  Query,
+  Req,
   UseGuards,
 } from &#x27;@nestjs/common&#x27;;
-import { IRequest } from &#x27;src/auth/auth.type&#x27;;
-import { JwtAuthGuard } from &#x27;src/auth/guard/jwt.guard&#x27;;
-import { Roles } from &#x27;src/role/role.decorator&#x27;;
-import { Role } from &#x27;src/role/role.enum&#x27;;
-import { BookPagination } from &#x27;src/utils/pagination/pagination&#x27;;
 import { UpdateResult } from &#x27;typeorm&#x27;;
+import { IRequest } from &#x27;../auth/auth.type&#x27;;
+import { JwtAuthGuard } from &#x27;../auth/guard/jwt.guard&#x27;;
+import { Roles } from &#x27;../role/role.decorator&#x27;;
+import { Role } from &#x27;../role/role.enum&#x27;;
+import { BookPaginationParam } from &#x27;../utils/pagination/pagination.param&#x27;;
+import { BookPagination } from &#x27;../utils/pagination/pagination.type&#x27;;
 import { Book } from &#x27;./book.entity&#x27;;
 import { BookService } from &#x27;./book.service&#x27;;
 import { CreateBookDto } from &#x27;./dto/create-book.dto&#x27;;
@@ -765,22 +754,22 @@ export class BookController {
   @Roles(Role.ADMIN)
   @Post()
   @HttpCode(201)
-  async create(@Req() request: IRequest, @Body() createBookDto: CreateBookDto) {
-    console.error(createBookDto);
-
+  async create(@Body() createBookDto: CreateBookDto): Promise&lt;Book&gt; {
     return this.bookService.create(createBookDto);
   }
 
   @Get()
   @HttpCode(200)
-  async findBooks(@Query() { page, limit }: BookPagination) {
+  async findBooks(
+    @Query() { page, limit }: BookPaginationParam,
+  ): Promise&lt;BookPagination&gt; {
     return this.bookService.findBooks(page, limit);
   }
 
   @Get(&#x27;:id&#x27;)
   @HttpCode(200)
   async findOne(@Param(&#x27;id&#x27;) id: number): Promise&lt;Book&gt; {
-    const book &#x3D; await this.bookService.findOne(+id);
+    const book &#x3D; await this.bookService.findOne(id);
     if (!book)
       throw new HttpException(
         &#x27;Book with this id does not exist&#x27;,
@@ -797,7 +786,7 @@ export class BookController {
     @Param(&#x27;id&#x27;) id: number,
     @Body() updateBookDto: UpdateBookDto,
   ): Promise&lt;UpdateResult&gt; {
-    return this.bookService.update(+id, updateBookDto);
+    return this.bookService.update(id, updateBookDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -805,7 +794,7 @@ export class BookController {
   @Delete(&#x27;:id&#x27;)
   @HttpCode(204)
   async remove(@Param(&#x27;id&#x27;) id: number): Promise&lt;UpdateResult&gt; {
-    return this.bookService.remove(+id);
+    return this.bookService.remove(id);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -815,7 +804,7 @@ export class BookController {
     @Req() request: IRequest,
     @Param(&#x27;id&#x27;) id: number,
   ): Promise&lt;Book&gt; {
-    const book &#x3D; await this.bookService.borrow(request.user.id, +id);
+    const book &#x3D; await this.bookService.borrow(request.user.id, id);
     if (!book)
       throw new HttpException(
         &#x27;Book with this id does not exist&#x27;,
@@ -831,7 +820,7 @@ export class BookController {
     @Req() request: IRequest,
     @Param(&#x27;id&#x27;) id: number,
   ): Promise&lt;Book&gt; {
-    const book &#x3D; await this.bookService.return(request.user.id, +id);
+    const book &#x3D; await this.bookService.return(request.user.id, id);
     if (!book)
       throw new HttpException(
         &#x27;Book with this id does not exist&#x27;,

@@ -161,8 +161,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="75"
-                            class="link-to-prism">src/category/category.controller.ts:75</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="91"
+                            class="link-to-prism">src/category/category.controller.ts:91</a></div>
                 </td>
             </tr>
 
@@ -252,8 +252,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="86"
-                            class="link-to-prism">src/category/category.controller.ts:86</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="102"
+                            class="link-to-prism">src/category/category.controller.ts:102</a></div>
                 </td>
             </tr>
 
@@ -343,8 +343,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="35"
-                            class="link-to-prism">src/category/category.controller.ts:35</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="49"
+                            class="link-to-prism">src/category/category.controller.ts:49</a></div>
                 </td>
             </tr>
 
@@ -422,8 +422,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="61"
-                            class="link-to-prism">src/category/category.controller.ts:61</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="77"
+                            class="link-to-prism">src/category/category.controller.ts:77</a></div>
                 </td>
             </tr>
 
@@ -487,7 +487,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>findCategories(undefined: <a href="../classes/CategoryPagination.html">CategoryPagination</a>)</code>
+                    <code>findCategories(undefined: <a href="../classes/CategoryPaginationParam.html">CategoryPaginationParam</a>)</code>
                 </td>
             </tr>
 
@@ -501,8 +501,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="43"
-                            class="link-to-prism">src/category/category.controller.ts:43</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="57"
+                            class="link-to-prism">src/category/category.controller.ts:57</a></div>
                 </td>
             </tr>
 
@@ -523,7 +523,7 @@
                             <tbody>
                                 <tr>
                                     <td>
-                                                <code><a href="../classes/CategoryPagination.html" target="_self" >CategoryPagination</a></code>
+                                                <code><a href="../classes/CategoryPaginationParam.html" target="_self" >CategoryPaginationParam</a></code>
                                     </td>
 
                                     <td>
@@ -538,7 +538,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>        <code><a href="../classes/Category.html" target="_self" >Promise&lt;CategoryPagination&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -579,8 +579,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="49"
-                            class="link-to-prism">src/category/category.controller.ts:49</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="65"
+                            class="link-to-prism">src/category/category.controller.ts:65</a></div>
                 </td>
             </tr>
 
@@ -658,8 +658,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="108"
-                            class="link-to-prism">src/category/category.controller.ts:108</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="124"
+                            class="link-to-prism">src/category/category.controller.ts:124</a></div>
                 </td>
             </tr>
 
@@ -737,8 +737,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="97"
-                            class="link-to-prism">src/category/category.controller.ts:97</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="113"
+                            class="link-to-prism">src/category/category.controller.ts:113</a></div>
                 </td>
             </tr>
 
@@ -802,26 +802,40 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
+  Body, Controller,
+
+
+
+
+
+  Delete, Get,
+
+
+
+
+
   HttpCode,
-  Query,
+
   HttpException,
-  HttpStatus,
-  UseGuards,
+  HttpStatus, Param, Patch, Post,
+
+
+
+
+
+  Query,
+
+
+  UseGuards
 } from &#x27;@nestjs/common&#x27;;
-import { JwtAuthGuard } from &#x27;src/auth/guard/jwt.guard&#x27;;
-import { Book } from &#x27;src/book/book.entity&#x27;;
-import { CreateBookDto } from &#x27;src/book/dto/create-book.dto&#x27;;
-import { Roles } from &#x27;src/role/role.decorator&#x27;;
-import { Role } from &#x27;src/role/role.enum&#x27;;
-import { CategoryPagination } from &#x27;src/utils/pagination/pagination&#x27;;
 import { UpdateResult } from &#x27;typeorm&#x27;;
+import { JwtAuthGuard } from &#x27;../auth/guard/jwt.guard&#x27;;
+import { Book } from &#x27;../book/book.entity&#x27;;
+import { CreateBookDto } from &#x27;../book/dto/create-book.dto&#x27;;
+import { Roles } from &#x27;../role/role.decorator&#x27;;
+import { Role } from &#x27;../role/role.enum&#x27;;
+import { CategoryPaginationParam } from &#x27;../utils/pagination/pagination.param&#x27;;
+import { CategoryPagination } from &#x27;../utils/pagination/pagination.type&#x27;;
 import { Category } from &#x27;./category.entity&#x27;;
 import { CategoryService } from &#x27;./category.service&#x27;;
 import { CreateCategoryDto } from &#x27;./dto/create-category.dto&#x27;;
@@ -843,14 +857,16 @@ export class CategoryController {
 
   @Get()
   @HttpCode(200)
-  async findCategories(@Query() { page, limit }: CategoryPagination) {
+  async findCategories(
+    @Query() { page, limit }: CategoryPaginationParam,
+  ): Promise&lt;CategoryPagination&gt; {
     return this.categoryService.findCategories(page, limit);
   }
 
   @Get(&#x27;:id&#x27;)
   @HttpCode(200)
   async findOne(@Param(&#x27;id&#x27;) id: number): Promise&lt;Category&gt; {
-    const category &#x3D; await this.categoryService.findOne(+id);
+    const category &#x3D; await this.categoryService.findOne(id);
     if (!category)
       throw new HttpException(
         &#x27;Category with this id does not exist&#x27;,
@@ -862,7 +878,7 @@ export class CategoryController {
   @Get(&#x27;:id/book&#x27;)
   @HttpCode(200)
   async findBooksOfOne(@Param(&#x27;id&#x27;) id: number): Promise&lt;Book[]&gt; {
-    const books &#x3D; await this.categoryService.findBooksOfOne(+id);
+    const books &#x3D; await this.categoryService.findBooksOfOne(id);
     if (!books.length)
       throw new HttpException(
         &#x27;Category does not contain any books&#x27;,
@@ -901,7 +917,7 @@ export class CategoryController {
     @Param(&#x27;id&#x27;) id: number,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ): Promise&lt;UpdateResult&gt; {
-    return this.categoryService.update(+id, updateCategoryDto);
+    return this.categoryService.update(id, updateCategoryDto);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -909,7 +925,7 @@ export class CategoryController {
   @Delete(&#x27;:id&#x27;)
   @HttpCode(204)
   async remove(@Param(&#x27;id&#x27;) id: number): Promise&lt;UpdateResult&gt; {
-    return this.categoryService.remove(+id);
+    return this.categoryService.remove(id);
   }
 }
 </code></pre>

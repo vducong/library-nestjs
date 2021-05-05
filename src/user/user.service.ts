@@ -5,9 +5,10 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
-import { UserPagination } from 'src/utils/pagination/pagination';
-import { Payload } from 'src/auth/auth.type';
+import { Payload } from '../auth/auth.type';
 import { GoogleUserDto } from './dto/google-user.dto';
+import { UserPagination } from '../utils/pagination/pagination.type';
+import { UserPaginationParam } from '../utils/pagination/pagination.param';
 
 @Injectable()
 export class UserService {
@@ -62,9 +63,9 @@ export class UserService {
     });
   }
 
-  async findUsers(page?: number, limit?: number) {
-    const currentPage = page || UserPagination.DEFAULT_PAGE;
-    const take = limit || UserPagination.DEFAULT_LIMIT;
+  async findUsers(page?: number, limit?: number): Promise<UserPagination> {
+    const currentPage = page || UserPaginationParam.DEFAULT_PAGE;
+    const take = limit || UserPaginationParam.DEFAULT_LIMIT;
     const skip = (currentPage - 1) * take;
 
     const [users, total] = await this.userRepo

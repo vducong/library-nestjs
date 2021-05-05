@@ -1,12 +1,12 @@
-import LengthLimits from '../constants/length';
+import LengthLimits from '../common/constants/length';
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
-  UpdateDateColumn,
+  Entity,
   ManyToMany,
   OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 import { Category } from '../category/category.entity';
 import { Record } from '../record/record.entity';

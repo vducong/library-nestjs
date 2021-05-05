@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
-import { BookService } from './book.service';
-import { BookController } from './book.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { RecordModule } from '../record/record.module';
+import { RecordService } from '../record/record.service';
+import { UserModule } from '../user/user.module';
+import { UserService } from '../user/user.service';
+import { BookController } from './book.controller';
 import { Book } from './book.entity';
-import { UserService } from 'src/user/user.service';
-import { RecordService } from 'src/record/record.service';
-import { RecordModule } from 'src/record/record.module';
-import { UserModule } from 'src/user/user.module';
+import { BookService } from './book.service';
 
 @Module({
   controllers: [BookController],

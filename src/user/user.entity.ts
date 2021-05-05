@@ -1,15 +1,15 @@
-import LengthLimits from '../constants/length';
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
-  OneToMany,
-} from 'typeorm';
 import { Exclude } from 'class-transformer';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
+import LengthLimits from '../common/constants/length';
 import { Record } from '../record/record.entity';
-import { Role } from 'src/role/role.enum';
+import { Role } from '../role/role.enum';
 
 @Entity()
 export class User {
