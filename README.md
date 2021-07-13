@@ -25,6 +25,10 @@
 ## Description
 
 [Library - Nestjs](https://github.com/rbaoc/library-nestjs) implements a Library Management backend system.
+- CRUD features for book, user entity
+- Support Google OAuth authentication
+- Support basic auth
+- Support basic authorization
 
 ## Installation
 
